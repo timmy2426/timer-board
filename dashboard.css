@@ -1,0 +1,85 @@
+/*dashboard*/
+.dashboard-wrap {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.settings-area,
+.controls-area {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.settings-area > span,
+.settings-area > input {
+  display: inline-block;
+  margin: 10px 10px;
+}
+.controls-area > button {
+  margin: 10px 5px;
+}
+.timer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid;
+  border-radius: 30px;
+  margin: 20px 10px;
+}
+.timer > .timer-title,
+.timer > .timer-times,
+.timer > .timer-controls {
+  display: inline-block;
+  margin: 15px 20px;
+}
+.timer > .timer-title,
+.timer > .timer-times {
+  font-size: 24px;
+}
+.timer > .timer-controls > button {
+  margin: 10px 5px;
+}
+.stopwatch-times {
+  font-size: 24px;
+  margin: 20px 0;
+}
+.stopwatch-times > #s-tms {
+  font-size: 16px;
+}
+.stopwatch-controls > button {
+  margin: 10px 5px;
+}
+.stopwatch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid;
+  border-radius: 30px;
+  margin: 20px 10px;
+}
+.stopwatch > .stopwatch-data,
+.stopwatch > .data-controls {
+  display: inline-block;
+  margin: 15px 20px;
+}
+.stopwatch > .stopwatch-data {
+  font-size: 24px;
+}
+.instruction {
+  max-width: 70%;
+  text-align: left;
+  padding: 0 50px;
+  margin: 0 auto;
+}
+.instruction p {
+  font-weight: bolder;
+}
+.instruction ul {
+  list-style: none;
+  margin-left: 0px;
+}
+@media (max-width: 768px) {
+  .instruction {
+    max-width: 100%;
+  }
+}

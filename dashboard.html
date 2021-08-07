@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="dashboard.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-wrap">
+        <div class="settings-area">
+            <h1>計時器</h1>
+            <span>新增計時器：</span>
+            <input id="typing-area" type="text" placeholder="計時器名稱">
+        </div>
+        <div class="controls-area">
+            <button id="build">新增</button>
+            <button id="clean">清理</button>
+        </div>
+        <div id="record-area"></div>
+    </div>
+    <div class="dashboard-wrap">
+        <h1>碼表</h1>
+        <div class="stopwatch-times">
+            <span id="s-hrs">00</span> :
+            <span id="s-min">00</span> :
+            <span id="s-sec">00</span> .
+            <span id="s-tms">00</span>
+        </div>
+        <div class="stopwatch-controls">
+            <button id="s-start-pause">開始</button>
+            <button id="s-reset">歸零</button>
+            <button id="s-record">紀錄</button>
+            <button id="s-clean">清理</button>
+        </div>
+        <div id="stopwatch-records"></div>
+    </div>
+    <div class="dashboard-wrap">
+        <h1>使用說明</h1>
+        <div class="instruction">
+            <p>計時器：</p>
+            <ul>
+                <li>1. 在新增計時器欄位內填入自訂名稱。</li>
+                <li>2. 可同時執行多個計時器，並不衝突。</li>
+                <li>3. 使用清理按鈕清除所有計時器。</li>
+                <li>4. 網頁重整可保留已建立的計時器，且數值仍在。</li>
+            </ul>
+            <p>碼表：</p>
+            <ul>
+                <li>1. 使用開始(暫停) / 歸零控制碼表。</li>
+                <li>2. 使用紀錄 / 清理管理紀錄列表。</li>
+                <li>3. 網頁重整可保留碼表數值，且紀錄不會丟失。</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
