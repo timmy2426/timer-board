@@ -1,85 +1,86 @@
-/*dashboard*/
-.dashboard-wrap {
-  text-align: center;
-  margin-bottom: 50px;
+/*display*/
+#dashboard *,
+#dashboard *::before,
+#dashboard *::after {
+  box-sizing: border-box;
 }
-.settings-area,
-.controls-area {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.settings-area > span,
-.settings-area > input {
-  display: inline-block;
-  margin: 10px 10px;
-}
-.controls-area > button {
-  margin: 10px 5px;
-}
-.timer {
+#dashboard {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid;
-  border-radius: 30px;
-  margin: 20px 10px;
 }
-.timer > .timer-title,
-.timer > .timer-times,
-.timer > .timer-controls {
-  display: inline-block;
-  margin: 15px 20px;
+#dashboard .container-7 {
+  width: calc(70% - 30px);
 }
-.timer > .timer-title,
-.timer > .timer-times {
-  font-size: 24px;
+#dashboard .container-3 {
+  width: calc(30% - 30px);
 }
-.timer > .timer-controls > button {
-  margin: 10px 5px;
-}
-.stopwatch-times {
-  font-size: 24px;
-  margin: 20px 0;
-}
-.stopwatch-times > #s-tms {
-  font-size: 16px;
-}
-.stopwatch-controls > button {
-  margin: 10px 5px;
-}
-.stopwatch {
+#dashboard .wrap {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
-  border: 1px solid;
-  border-radius: 30px;
-  margin: 20px 10px;
 }
-.stopwatch > .stopwatch-data,
-.stopwatch > .data-controls {
-  display: inline-block;
-  margin: 15px 20px;
+#dashboard .wrap-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
 }
-.stopwatch > .stopwatch-data {
-  font-size: 24px;
+#dashboard .col-4 {
+  width: calc(57% - 15px);
 }
-.instruction {
-  max-width: 70%;
-  text-align: left;
-  padding: 0 50px;
-  margin: 0 auto;
+#dashboard .col-3 {
+  width: calc(43% - 15px);
 }
-.instruction p {
-  font-weight: bolder;
+#dashboard .box-1 {
+  margin: 30px 15px;
 }
-.instruction ul {
-  list-style: none;
-  margin-left: 0px;
+#dashboard .box-2 {
+  margin: 30px 15px;
+}
+#dashboard .box-3 {
+  margin: 30px 15px;
+}
+#dashboard .box-4 {
+  margin: 30px 15px;
+}
+#dashboard .box-5 {
+  margin: 0 30px 0 0;
+}
+#dashboard .box-6 {
+  margin: 0 30px 0 0;
+}
+#dashboard .box-7 {
+  margin: 0 0 30px 0;
+}
+#dashboard .border {
+  border: 1px solid #000;
+}
+#dashboard #time-area,
+#dashboard #stopwatch-area,
+#dashboard #stopwatch-record-area,
+#dashboard #countdown-timer-area,
+#dashboard #status-area,
+#dashboard #control-area,
+#dashboard #timer-area {
+  width: 100%;
+  padding: 30px;
+}
+@media (max-width: 1200px) {
+  #dashboard .container-7,
+  #dashboard .container-3 {
+    width: 100%;
+  }
+  #dashboard .box-1 {
+    margin: 0 15px 30px;
+  }
 }
 @media (max-width: 768px) {
-  .instruction {
-    max-width: 100%;
+  #dashboard .col-4,
+  #dashboard .col-3 {
+    width: 100%;
+  }
+  #dashboard .box-5 {
+    margin: 30px 0 0 0;
+  }
+  #dashboard .box-6 {
+    margin: 0 0 30px 0;
   }
 }
