@@ -1,4 +1,4 @@
-/*display*/
+/*Layout*/
 #dashboard *,
 #dashboard *::before,
 #dashboard *::after {
@@ -7,6 +7,7 @@
 #dashboard {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 #dashboard .container-7 {
   width: calc(70% - 30px);
@@ -20,8 +21,7 @@
 }
 #dashboard .wrap-reverse {
   display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap;
+  flex-flow: row-reverse wrap;
 }
 #dashboard .col-4 {
   width: calc(57% - 15px);
@@ -29,21 +29,13 @@
 #dashboard .col-3 {
   width: calc(43% - 15px);
 }
-#dashboard .box-1 {
-  margin: 30px 15px;
-}
-#dashboard .box-2 {
-  margin: 30px 15px;
-}
-#dashboard .box-3 {
-  margin: 30px 15px;
-}
+#dashboard .box-1,
+#dashboard .box-2,
+#dashboard .box-3,
 #dashboard .box-4 {
   margin: 30px 15px;
 }
-#dashboard .box-5 {
-  margin: 0 30px 0 0;
-}
+#dashboard .box-5,
 #dashboard .box-6 {
   margin: 0 30px 0 0;
 }
@@ -61,7 +53,7 @@
 #dashboard #control-area,
 #dashboard #timer-area {
   width: 100%;
-  padding: 30px;
+  padding: 15px 30px;
 }
 @media (max-width: 1200px) {
   #dashboard .container-7,
