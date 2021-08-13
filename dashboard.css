@@ -1,78 +1,249 @@
-/*Layout*/
-#dashboard *,
-#dashboard *::before,
-#dashboard *::after {
-  box-sizing: border-box;
+/* Font */
+@font-face {
+  font-family: digital;
+  src: url("font/digital-7\ \(mono\).ttf") format("truetype");
 }
+/* Layout */
 #dashboard {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 3fr 4fr 3fr;
+  grid-template-rows: repeat(4, auto);
+  grid-template-areas:
+    "stopwatch time timer"
+    "stopwatch-record countdown-timer timer"
+    "stopwatch-record status timer"
+    "control control timer";
 }
-#dashboard .container-7 {
-  width: calc(70% - 30px);
+#dashboard h2 {
+  text-align: center;
 }
-#dashboard .container-3 {
-  width: calc(30% - 30px);
+#dashboard p {
+  text-align: center;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
 }
-#dashboard .wrap {
-  display: flex;
-  flex-wrap: wrap;
+#dashboard button {
+  margin: 10px;
 }
-#dashboard .wrap-reverse {
-  display: flex;
-  flex-flow: row-reverse wrap;
+#time-area,
+#stopwatch-area,
+#stopwatch-record-area,
+#countdown-timer-area,
+#status-area,
+#control-area,
+#timer-area {
+  background-color: #fbfbfb;
+  padding: 0 30px 30px;
+  margin: 15px;
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: 5px;
+  box-shadow: 10px 10px 15px rgba(128, 128, 128, 0.3), 10px 10px 15px #fff,
+    inset 5px 5px 15px rgba(128, 128, 128, 0.3), inset -5px -5px 15px #fff;
 }
-#dashboard .col-4 {
-  width: calc(57% - 15px);
+#time-area {
+  grid-area: time;
 }
-#dashboard .col-3 {
-  width: calc(43% - 15px);
+#stopwatch-area {
+  grid-area: stopwatch;
 }
-#dashboard .box-1,
-#dashboard .box-2,
-#dashboard .box-3,
-#dashboard .box-4 {
-  margin: 30px 15px;
+#stopwatch-record-area {
+  grid-area: stopwatch-record;
 }
-#dashboard .box-5,
-#dashboard .box-6 {
-  margin: 0 30px 0 0;
+#countdown-timer-area {
+  grid-area: countdown-timer;
 }
-#dashboard .box-7 {
-  margin: 0 0 30px 0;
+#status-area {
+  grid-area: status;
 }
-#dashboard .border {
-  border: 1px solid #000;
+#control-area {
+  grid-area: control;
 }
-#dashboard #time-area,
-#dashboard #stopwatch-area,
-#dashboard #stopwatch-record-area,
-#dashboard #countdown-timer-area,
-#dashboard #status-area,
-#dashboard #control-area,
-#dashboard #timer-area {
-  width: 100%;
-  padding: 15px 30px;
+#timer-area {
+  grid-area: timer;
 }
 @media (max-width: 1200px) {
-  #dashboard .container-7,
-  #dashboard .container-3 {
-    width: 100%;
-  }
-  #dashboard .box-1 {
-    margin: 0 15px 30px;
+  #dashboard {
+    grid-template-columns: 3fr 4fr;
+    grid-template-rows: repeat(5, auto);
+    grid-template-areas:
+      "stopwatch time"
+      "stopwatch-record countdown-timer"
+      "stopwatch-record status"
+      "control control"
+      "timer timer";
   }
 }
 @media (max-width: 768px) {
-  #dashboard .col-4,
-  #dashboard .col-3 {
-    width: 100%;
+  #dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(7, auto);
+    grid-template-areas:
+      "time"
+      "stopwatch"
+      "stopwatch-record"
+      "countdown-timer"
+      "status"
+      "control"
+      "timer";
   }
-  #dashboard .box-5 {
-    margin: 30px 0 0 0;
-  }
-  #dashboard .box-6 {
-    margin: 0 0 30px 0;
-  }
+}
+/* time-area */
+#time-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: normal;
+  content: "\f073";
+  padding-right: 0.5em;
+}
+#time-area p {
+  font-size: 48px;
+}
+/* stopwatch-area */
+#stopwatch-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f2f2";
+  padding-right: 0.5em;
+}
+#stopwatch-area p {
+  font-size: 36px;
+}
+#stopwatch-area p span#s-tms {
+  font-size: 16px;
+}
+#stopwatch-area .controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#stopwatch-area .controls div {
+  font-size: 0;
+}
+#stopwatch-area .controls div:nth-child(1) {
+  text-align: end;
+}
+#stopwatch-area .controls div:nth-child(2) {
+  text-align: start;
+}
+/* stopwatch-record-area */
+#stopwatch-record-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: normal;
+  content: "\f328";
+  padding-right: 0.5em;
+}
+#stopwatch-record-area .stopwatch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #842b00;
+}
+#stopwatch-record-area .stopwatch:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+#stopwatch-record-area .stopwatch .data p {
+  font-size: 24px;
+}
+/* countdown-timer-area */
+#countdown-timer-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f251";
+  padding-right: 0.5em;
+}
+#countdown-timer-area .countdown-timer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 0;
+}
+#countdown-timer-area .countdown-timer .graph {
+  position: relative;
+  margin-right: 30px;
+}
+#countdown-timer-area .countdown-timer .graph svg {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  z-index: 10;
+}
+#countdown-timer-area .countdown-timer .graph svg circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #dd9933;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transform: translate(5px, 5px);
+}
+#countdown-timer-area .countdown-timer .graph svg circle#graph-percent {
+  stroke: #842b00;
+  stroke-dasharray: 440;
+  stroke-dashoffset: calc(440 - (440 * 75) / 100);
+}
+#countdown-timer-area .countdown-timer .graph .percent {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+#countdown-timer-area .countdown-timer .graph .percent p {
+  font-size: 16px;
+}
+#countdown-timer-area .countdown-timer .graph .percent #percent-number {
+  font-size: 36px;
+}
+#countdown-timer-area .countdown-timer .digit {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+#countdown-timer-area .countdown-timer .digit p {
+  font-size: 36px;
+}
+#countdown-timer-area .countdown-timer .digit .controls {
+  text-align: center;
+}
+/* status-area */
+#status-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f012";
+  padding-right: 0.5em;
+}
+/* control-area */
+#control-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f1de";
+  padding-right: 0.5em;
+}
+/* timer-area */
+#timer-area h2::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: normal;
+  content: "\f017";
+  padding-right: 0.5em;
+}
+#timer-area .timer {
+  padding: 0 20px 20px;
+  text-align: center;
+  border: 1px solid #842b00;
+}
+#timer-area .timer .times p {
+  font-size: 20px;
+}
+#timer-area .controls {
+  font-size: 0;
 }

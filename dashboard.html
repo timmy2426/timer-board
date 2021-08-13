@@ -7,82 +7,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        #dashboard {
+            background-color: #f5f5f5;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='30' viewBox='0 0 1000 120'%3E%3Cg fill='none' stroke='%23e8e8e8' stroke-width='1.2' stroke-opacity='0.94'%3E%3Cpath d='M-500 75c0 0 125-30 250-30S0 75 0 75s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 45c0 0 125-30 250-30S0 45 0 45s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 105c0 0 125-30 250-30S0 105 0 105s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 15c0 0 125-30 250-30S0 15 0 15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500-15c0 0 125-30 250-30S0-15 0-15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 135c0 0 125-30 250-30S0 135 0 135s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        button {
+            border-style: solid;
+            border-top-width: 0;
+            border-right-width: 0;
+            border-left-width: 0;
+            border-bottom-width: 0;
+            color: #ffffff;
+            border-color: #842b00;
+            background-color: #842b00;
+            border-radius: 2px;
+            padding-top: 10px;
+            padding-right: 40px;
+            padding-bottom: 10px;
+            padding-left: 40px;
+            font-family: inherit;
+            font-weight: inherit;
+            line-height: 1;
+        }
+
+        body,
+        a,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #842b00;
+        }
+
+        h2 {
+            font-size: 30px;
+        }
+
+        h3 {
+            font-size: 25px;
+        }
+    </style>
 </head>
 
 <body>
     <div id="dashboard">
-        <div class="container-7">
-            <div class="wrap-reverse box-2">
-                <div class="col-4 border">
-                    <div id="time-area">
-                        <h2>現在時間</h2>
-                        <p>
-                            <span id="hrs">00</span> :
-                            <span id="min">00</span> :
-                            <span id="sec">00</span>
-                        </p>
-                    </div>
+        <div id="time-area">
+            <h2>現在時間</h2>
+            <p>
+                <span id="hrs">00</span> :
+                <span id="min">00</span> :
+                <span id="sec">00</span>
+            </p>
+        </div>
+        <div id="stopwatch-area">
+            <h2>馬表</h2>
+            <p>
+                <span id="s-hrs">00</span> :
+                <span id="s-min">00</span> :
+                <span id="s-sec">00</span>.
+                <span id="s-tms">00</span>
+            </p>
+            <div class="controls">
+                <div>
+                    <button id="s-start-pause">開始</button>
+                    <button id="s-reset">歸零</button>
                 </div>
-                <div class="col-3 border box-5">
-                    <div id="stopwatch-area">
-                        <h2>馬表</h2>
-                        <p>
-                            <span id="s-hrs">00</span> :
-                            <span id="s-min">00</span> :
-                            <span id="s-sec">00</span> .
-                            <span id="s-tms">00</span>
-                        </p>
-                        <div class="stopwatch-controls">
-                            <button id="s-start-pause">開始</button>
-                            <button id="s-reset">歸零</button>
-                            <button id="s-record">紀錄</button>
-                            <button id="s-clean">清理</button>
-                        </div>
-                    </div>
+                <div>
+                    <button id="s-record">紀錄</button>
+                    <button id="s-clean">清理</button>
                 </div>
             </div>
-            <div class="wrap box-3">
-                <div class="col-3 border box-6">
-                    <div id="stopwatch-record-area">
-                        <h2>馬表紀錄</h2>
-                        <div id="stopwatch-records"></div>
+        </div>
+        <div id="stopwatch-record-area">
+            <h2>馬表紀錄</h2>
+            <div id="stopwatch-records">
+                <div class="stopwatch" id="1628591787773">
+                    <div class="data">
+                        <p>#1&emsp; 00 時 00 分 00 秒 00</p>
+                    </div>
+                    <div class="data-controls">
+                        <button id="s-delete" data-id="1628591787773">刪除</button>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="border box-7" id="countdown-timer-area">
-                        <h2>倒數計時器</h2>
+                <div class="stopwatch" id="1628591787773">
+                    <div class="data">
+                        <p>#1&emsp; 00 時 00 分 00 秒 00</p>
                     </div>
-                    <div class="border" id="status-area">
-                        <h2>狀態列</h2>
-                        <ul>
-                            <li>倒數計時器：</li>
-                            <li>馬表：</li>
-                            <li>計時器：</li>
-                            <li>馬表紀錄：</li>
-                            <li>計時器數量：</li>
-                        </ul>
+                    <div class="data-controls">
+                        <button id="s-delete" data-id="1628591787773">刪除</button>
                     </div>
                 </div>
-            </div>
-            <div class="wrap border box-4">
-                <div id="control-area">
-                    <h2>控制台</h2>
-                    <div>
-                        <span>設定倒數計時器：</span>
+                <div class="stopwatch" id="1628591787773">
+                    <div class="data">
+                        <p>#1&emsp; 00 時 00 分 00 秒 00</p>
                     </div>
-                    <div>
-                        <span>新增計時器：</span>
+                    <div class="data-controls">
+                        <button id="s-delete" data-id="1628591787773">刪除</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container-3 border box-1">
-            <div id="timer-area">
-                <h2>計時器</h2>
-                <div id="timer-columns"></div>
+        <div id="countdown-timer-area">
+            <h2>倒數計時器</h2>
+            <div class="countdown-timer">
+                <div class="graph">
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle id="graph-percent" cx="70" cy="70" r="70"></circle>
+                    </svg>
+                    <div class="percent">
+                        <p><span id="percent-number">75</span> %</p>
+                    </div>
+                </div>
+                <div class="digit">
+                    <p>
+                        <span id="countdown-hrs">00</span> :
+                        <span id="countdown-min">00</span> :
+                        <span id="countdown-sec">00</span>
+                    </p>
+                    <div class="controls">
+                        <button id="countdown-start-pause">開始</button>
+                        <button id="countdown-reset">重設</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="status-area">
+            <h2>狀態列</h2>
+            <div class="stopwatch-status">
+                <span class="status">待機</span>
+                <span class="content">共 <span id="stopwatch-record-count">5</span> 筆記錄</span>
+                <div class="light"></div>
+            </div>
+            <div class="countdown-timer-status">
+                <span class="status">啟動</span>
+                <span class="content">剩餘 <span id="countdown-timer-percent">75</span> %</span>
+                <div class="light"></div>
+            </div>
+            <div class="timer-status">
+                <span class="status"></span>
+                <span class="content">共 <span id="timer-count">4</span> 台計時器</span>
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="control-area">
+            <h2>控制台</h2>
+            <div>
+                <span>設定倒數計時器：</span>
+            </div>
+            <div>
+                <span>新增計時器：</span>
+            </div>
+        </div>
+        <div id="timer-area">
+            <h2>計時器</h2>
+            <div id="timer-columns">
+                <div class="timer" id="1628591967784">
+                    <div class="title">
+                        <h3>計時器標題</h3>
+                    </div>
+                    <div class="times">
+                        <p>
+                            <span id="hrs-1628591967784">00</span> 時
+                            <span id="min-1628591967784">00</span> 分
+                            <span id="sec-1628591967784">00</span> 秒
+                        </p>
+                    </div>
+                    <div class="controls">
+                        <button id="start-pause" data-id="1628591967784">開始</button>
+                        <button id="reset" data-id="1628591967784">歸零</button>
+                        <button id="delete" data-id="1628591967784">刪除</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        const labels = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+        ];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'My First dataset',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }]
+        };
+        const config = {
+            type: 'line',
+            data,
+            options: {}
+        };
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
 </body>
 
 </html>
