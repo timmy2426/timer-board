@@ -1,10 +1,10 @@
-/* Font */
+/* font */
 @import url("https://tadralling.com/dist/font-awesome-5-free/css/all.min.css");
 @font-face {
   font-family: RobotoMono;
   src: url("../font/RobotoMono-VariableFont_wght.ttf");
 }
-/* Layout */
+/* layout */
 #dashboard {
   display: grid;
   grid-template-columns: 3fr 4fr 3fr;
@@ -97,6 +97,12 @@
 }
 #time-area p {
   font-size: 48px;
+}
+#time-area p #session {
+  font-size: 36px;
+}
+#time-area p:nth-child(3) {
+  font-size: 28px;
 }
 /* stopwatch-area */
 #stopwatch-area h2::before {
