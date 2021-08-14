@@ -1,8 +1,5 @@
 /* Font */
-@font-face {
-  font-family: digital;
-  src: url("font/digital-7\ \(mono\).ttf") format("truetype");
-}
+@import url("https://tadralling.com/dist/font-awesome-5-free/css/all.min.css");
 /* Layout */
 #dashboard {
   display: grid;
