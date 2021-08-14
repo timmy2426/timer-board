@@ -35,6 +35,7 @@
         }
 
         body,
+        input,
         a,
         h1,
         h2,
@@ -43,6 +44,7 @@
         h5,
         h6 {
             color: #842b00;
+            font-family: RobotoMono;
         }
 
         h2 {
@@ -74,18 +76,13 @@
         <div id="time-area">
             <h2>現在時間</h2>
             <p>
-                <span id="hrs">00</span> :
-                <span id="min">00</span> :
-                <span id="sec">00</span>
+                <span id="hrs">00</span>:<span id="min">00</span>:<span id="sec">00</span>
             </p>
         </div>
         <div id="stopwatch-area">
             <h2>馬表</h2>
             <p>
-                <span id="s-hrs">00</span> :
-                <span id="s-min">00</span> :
-                <span id="s-sec">00</span>.
-                <span id="s-tms">00</span>
+                <span id="s-hrs">00</span>:<span id="s-min">00</span>:<span id="s-sec">00</span><span id="s-tms">.00</span>
             </p>
             <div class="controls">
                 <div>
@@ -103,7 +100,7 @@
             <div id="stopwatch-records">
                 <div class="stopwatch" id="1628591787773">
                     <div class="data">
-                        <p>#1&emsp; 00 時 00 分 00 秒 00</p>
+                        <p>#1&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
                     </div>
                     <div class="data-controls">
                         <button id="s-delete" data-id="1628591787773">刪除</button>
@@ -111,7 +108,7 @@
                 </div>
                 <div class="stopwatch" id="1628591787773">
                     <div class="data">
-                        <p>#1&emsp; 00 時 00 分 00 秒 00</p>
+                        <p>#2&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
                     </div>
                     <div class="data-controls">
                         <button id="s-delete" data-id="1628591787773">刪除</button>
@@ -119,7 +116,7 @@
                 </div>
                 <div class="stopwatch" id="1628591787773">
                     <div class="data">
-                        <p>#1&emsp; 00 時 00 分 00 秒 00</p>
+                        <p>#3&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
                     </div>
                     <div class="data-controls">
                         <button id="s-delete" data-id="1628591787773">刪除</button>
@@ -141,9 +138,7 @@
                 </div>
                 <div class="digit">
                     <p>
-                        <span id="countdown-hrs">00</span> :
-                        <span id="countdown-min">00</span> :
-                        <span id="countdown-sec">00</span>
+                        <span id="countdown-hrs">00</span>:<span id="countdown-min">00</span>:<span id="countdown-sec">00</span>
                     </p>
                     <div class="controls">
                         <button id="countdown-start-pause">開始</button>

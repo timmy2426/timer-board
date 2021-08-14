@@ -1,5 +1,9 @@
 /* Font */
 @import url("https://tadralling.com/dist/font-awesome-5-free/css/all.min.css");
+@font-face {
+  font-family: RobotoMono;
+  src: url("../font/RobotoMono-VariableFont_wght.ttf");
+}
 /* Layout */
 #dashboard {
   display: grid;
@@ -146,7 +150,10 @@
   border-bottom: none;
 }
 #stopwatch-record-area .stopwatch .data p {
-  font-size: 24px;
+  font-size: 20px;
+}
+#stopwatch-record-area .stopwatch .data p span {
+  font-size: 16px;
 }
 /* countdown-timer-area */
 #countdown-timer-area h2::before {
@@ -352,7 +359,6 @@
 }
 #control-area input {
   margin: 10px;
-  text-align: center;
 }
 #control-area .input {
   display: flex;
