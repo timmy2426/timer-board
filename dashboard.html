@@ -140,21 +140,24 @@
         </div>
         <div id="status-area">
             <h2>狀態列</h2>
-            <div class="stopwatch-status">
-                <span class="status">待機</span>
+            <div class="stopwatch">
+                <span class="activation">啟動</span>
+                <span class="suspension">暫停</span>
+                <span class="standby show">待機</span>
                 <span class="content">共 <span id="stopwatch-record-count">5</span> 筆記錄</span>
-                <div class="light"></div>
+                <div class="light green"></div>
             </div>
-            <div class="countdown-timer-status">
-                <span class="status">啟動</span>
+            <div class="countdown-timer">
+                <span class="activation show">啟動</span>
+                <span class="suspension">暫停</span>
+                <span class="standby">待機</span>
                 <span class="content">剩餘 <span id="countdown-timer-percent">75</span> %</span>
-                <div class="light"></div>
+                <div class="light red"></div>
             </div>
-            <div class="timer-status">
-                <span class="status"></span>
+            <div class="timers">
                 <span class="content">共 <span id="timer-count">4</span> 台計時器</span>
                 <div>
-                    <canvas id="myChart"></canvas>
+                    <canvas id="status-chart"></canvas>
                 </div>
             </div>
         </div>
@@ -192,30 +195,45 @@
     </div>
 
     <script>
-        const labels = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-        ];
+        const labels = ['啟動', '暫停', '待機'];
         const data = {
             labels: labels,
             datasets: [{
-                label: 'My First dataset',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
+                label: '',
+                data: [4, 2, 5],
+                backgroundColor: [
+                    'rgba(255, 0, 0, 0.2)',
+                    'rgba(255, 165, 0, 0.2)',
+                    'rgba(0, 128, 0, 0.2)'
+                ],
+                borderColor: [
+                    '#b22222',
+                    '#ff8c00',
+                    '#006400'
+                ],
+                borderWidth: 1
             }]
         };
         const config = {
-            type: 'line',
-            data,
-            options: {}
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            },
         };
-        var myChart = new Chart(
-            document.getElementById('myChart'),
+
+
+        var Chart = new Chart(
+            document.getElementById('status-chart'),
             config
         );
     </script>

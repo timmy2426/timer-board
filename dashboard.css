@@ -37,8 +37,8 @@
   margin: 15px;
   border: 1px solid rgba(128, 128, 128, 0.1);
   border-radius: 5px;
-  box-shadow: 10px 10px 15px rgba(128, 128, 128, 0.3), 10px 10px 15px #fff,
-    inset 5px 5px 15px rgba(128, 128, 128, 0.3), inset -5px -5px 15px #fff;
+  box-shadow: 10px 10px 15px rgba(128, 128, 128, 0.3),
+    inset 5px 5px 15px rgba(128, 128, 128, 0.3);
 }
 #time-area {
   grid-area: time;
@@ -125,6 +125,9 @@
   text-align: start;
 }
 /* stopwatch-record-area */
+#stopwatch-record-area {
+  overflow-y: auto;
+}
 #stopwatch-record-area h2::before {
   font-family: "Font Awesome 5 Free";
   font-weight: normal;
@@ -215,12 +218,114 @@
 #countdown-timer-area .countdown-timer .digit .controls {
   text-align: center;
 }
+@media (max-width: 576px) {
+  #countdown-timer-area .countdown-timer {
+    flex-wrap: wrap;
+  }
+}
 /* status-area */
 #status-area h2::before {
   font-family: "Font Awesome 5 Free";
   font-weight: bold;
   content: "\f012";
   padding-right: 0.5em;
+}
+#status-area .stopwatch,
+#status-area .countdown-timer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 20px 0;
+  border: 1px solid #842b00;
+}
+#status-area .timers {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 20px 0;
+  border: 1px solid #842b00;
+}
+#status-area .activation,
+#status-area .suspension,
+#status-area .standby {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 3em;
+}
+#status-area .activation.show {
+  display: inline;
+  color: #ff0000;
+}
+#status-area .suspension.show {
+  display: inline;
+  color: #ffa500;
+}
+#status-area .standby.show {
+  display: inline;
+  color: #008000;
+}
+#status-area .stopwatch::before {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1em;
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f2f2";
+  padding-right: 1em;
+}
+#status-area .countdown-timer::before {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1em;
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f251";
+  padding-right: 1em;
+}
+#status-area .timers::before {
+  position: absolute;
+  top: 1em;
+  transform: translateY(-25%);
+  left: 1em;
+  font-family: "Font Awesome 5 Free";
+  font-weight: normal;
+  content: "\f017";
+  padding-right: 1em;
+}
+#status-area .stopwatch .light,
+#status-area .countdown-timer .light {
+  position: absolute;
+  display: inline-block;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1em;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+#status-area .stopwatch .light.red,
+#status-area .countdown-timer .light.red {
+  background-color: #ff0000;
+  border: 1px solid #b22222;
+}
+#status-area .stopwatch .light.orange,
+#status-area .countdown-timer .light.orange {
+  background-color: #ffa500;
+  border: 1px solid #ff8c00;
+}
+#status-area .stopwatch .light.green,
+#status-area .countdown-timer .light.green {
+  background-color: #008000;
+  border: 1px solid #006400;
 }
 /* control-area */
 #control-area h2::before {
@@ -230,6 +335,9 @@
   padding-right: 0.5em;
 }
 /* timer-area */
+#timer-area {
+  overflow-y: auto;
+}
 #timer-area h2::before {
   font-family: "Font Awesome 5 Free";
   font-weight: normal;
@@ -239,7 +347,10 @@
 #timer-area .timer {
   padding: 0 20px 20px;
   text-align: center;
-  border: 1px solid #842b00;
+  border: 1px solid #fbfbfb;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgba(130, 45, 0, 0.3),
+    inset 5px 5px 10px rgba(130, 45, 0, 0.3);
 }
 #timer-area .timer .times p {
   font-size: 20px;
