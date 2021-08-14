@@ -173,6 +173,7 @@
   width: 150px;
   height: 150px;
   z-index: 10;
+  transform: rotate(270deg);
 }
 #countdown-timer-area .countdown-timer .graph svg circle {
   width: 100%;
@@ -185,8 +186,8 @@
 }
 #countdown-timer-area .countdown-timer .graph svg circle#graph-percent {
   stroke: #842b00;
-  stroke-dasharray: 440;
-  stroke-dashoffset: calc(440 - (440 * 75) / 100);
+  stroke-dasharray: calc(2 * 70 * 3.1416);
+  stroke-dashoffset: calc(0.25 * 2 * 70 * 3.1416);
 }
 #countdown-timer-area .countdown-timer .graph .percent {
   position: absolute;
@@ -239,6 +240,7 @@
   padding: 10px;
   margin: 20px 0;
   border: 1px solid #842b00;
+  font-size: 20px;
 }
 #status-area .timers {
   position: relative;
@@ -249,6 +251,7 @@
   padding: 10px;
   margin: 20px 0;
   border: 1px solid #842b00;
+  font-size: 20px;
 }
 #status-area .activation,
 #status-area .suspension,
@@ -294,7 +297,7 @@
 #status-area .timers::before {
   position: absolute;
   top: 1em;
-  transform: translateY(-25%);
+  transform: translateY(-35%);
   left: 1em;
   font-family: "Font Awesome 5 Free";
   font-weight: normal;
@@ -327,12 +330,45 @@
   background-color: #008000;
   border: 1px solid #006400;
 }
+#status-area .timers .chart-container {
+  position: relative;
+  width: 100%;
+  padding-top: 20px;
+}
 /* control-area */
 #control-area h2::before {
   font-family: "Font Awesome 5 Free";
   font-weight: bold;
   content: "\f1de";
   padding-right: 0.5em;
+}
+#control-area > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+#control-area > div span {
+  display: inline-block;
+  margin: 10px 0;
+}
+#control-area input {
+  margin: 10px;
+  text-align: center;
+}
+#control-area .input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#control-area .input input {
+  width: 5em;
+}
+@media (max-width: 576px) {
+  #control-area > div {
+    flex-direction: column;
+  }
 }
 /* timer-area */
 #timer-area {
@@ -347,10 +383,8 @@
 #timer-area .timer {
   padding: 0 20px 20px;
   text-align: center;
-  border: 1px solid #fbfbfb;
+  border: 1px solid #842b00;
   border-radius: 10px;
-  box-shadow: 1px 1px 10px rgba(130, 45, 0, 0.3),
-    inset 5px 5px 10px rgba(130, 45, 0, 0.3);
 }
 #timer-area .timer .times p {
   font-size: 20px;
