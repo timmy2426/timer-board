@@ -52,7 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
       let btn = e.target.dataset.id;
       let index = timerIdList.indexOf(parseInt(btn));
       if (start.innerHTML === "開始") {
-        let counter = new Worker("counter.js");
+        let counter = new Worker(
+          "https://tadralling.com/dist/dashboard/counter.min.js"
+        );
         counter.postMessage({ count: `${timerList[index].count}` });
         counter.onmessage = function (e) {
           let count = e.data.count;
@@ -256,7 +258,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelector("#s-start-pause").onclick = function () {
     if (document.querySelector("#s-start-pause").innerHTML === "開始") {
-      let counter = new Worker("counter.js");
+      let counter = new Worker(
+        "https://tadralling.com/dist/dashboard/counter.min.js"
+      );
       counter.postMessage({ count: `${stopwatchCount}` });
       counter.onmessage = function (e) {
         let count = e.data.count;

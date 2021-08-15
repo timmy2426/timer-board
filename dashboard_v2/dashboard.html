@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <script src="dashboard.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         #dashboard {
             background-color: #f5f5f5;
@@ -44,15 +45,6 @@
         h5,
         h6 {
             color: #842b00;
-            font-family: RobotoMono;
-        }
-
-        h2 {
-            font-size: 30px;
-        }
-
-        h3 {
-            font-size: 25px;
         }
 
         input {
@@ -85,7 +77,7 @@
         <div id="stopwatch-area">
             <h2>馬表</h2>
             <p>
-                <span id="s-hrs">00</span>:<span id="s-min">00</span>:<span id="s-sec">00</span><span id="s-tms">.00</span>
+                <span id="s-hrs">00</span>:<span id="s-min">00</span>:<span id="s-sec">00</span><span class="dot">.</span><span id="s-tms">00</span>
             </p>
             <div class="controls">
                 <div>
@@ -174,8 +166,7 @@
             <div id="timer-columns"></div>
         </div>
     </div>
-    <script src="dashboard.js"></script>
-    <script src="https://tadralling.com/dist/chart.js/dist/chart.min.js"></script>
+
     <script>
         const labels = ['啟動', '暫停', '待機'];
         const data = {
@@ -225,49 +216,53 @@
             document.getElementById('status-chart'),
             config
         );
+
     </script>
 
 </body>
-<!-- <div class="stopwatch" id="1628591787773">
-                    <div class="record">
-                        <p>#1&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
-                    </div>
-                    <div class="record-controls">
-                        <button id="s-delete" data-id="1628591787773">刪除</button>
-                    </div>
-                </div>
-                <div class="stopwatch" id="1628591787773">
-                    <div class="record">
-                        <p>#2&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
-                    </div>
-                    <div class="record-controls">
-                        <button id="s-delete" data-id="1628591787773">刪除</button>
-                    </div>
-                </div>
-                <div class="stopwatch" id="1628591787773">
-                    <div class="record">
-                        <p>#3&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
-                    </div>
-                    <div class="record-controls">
-                        <button id="s-delete" data-id="1628591787773">刪除</button>
-                    </div>
-                </div> -->
-<!-- <div class="timer" id="1628591967784">
-                    <div class="title">
-                        <h3>計時器標題</h3>
-                    </div>
-                    <div class="times">
-                        <p>
-                            <span id="t-hrs-1628591967784">00</span> 時
-                            <span id="t-min-1628591967784">00</span> 分
-                            <span id="t-sec-1628591967784">00</span> 秒
-                        </p>
-                    </div>
-                    <div class="controls">
-                        <button id="t-start-pause" data-id="1628591967784">開始</button>
-                        <button id="t-reset" data-id="1628591967784">歸零</button>
-                        <button id="t-delete" data-id="1628591967784">刪除</button>
-                    </div>
-                </div> -->
+<!--    
+<div class="record" id="1628591787773">
+    <div class="times">
+        <p>#1&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
+    </div>
+    <div class="record-controls">
+        <button id="s-delete" data-id="1628591787773">刪除</button>
+    </div>
+</div>
+<div class="record" id="1628591787773">
+    <div class="times">
+        <p>#2&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
+    </div>
+    <div class="record-controls">
+        <button id="s-delete" data-id="1628591787773">刪除</button>
+    </div>
+</div>
+<div class="record" id="1628591787773">
+    <div class="times">
+        <p>#3&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
+    </div>
+    <div class="record-controls">
+        <button id="s-delete" data-id="1628591787773">刪除</button>
+    </div>
+</div> -->
+
+<!--            
+<div class="timer" id="1628591967784">
+    <div class="title">
+        <h3>計時器標題</h3>
+    </div>
+    <div class="times">
+        <p>
+            <span id="t-hrs-1628591967784">00</span> 時
+            <span id="t-min-1628591967784">00</span> 分
+            <span id="t-sec-1628591967784">00</span> 秒
+        </p>
+    </div>
+    <div class="controls">
+        <button id="t-start-pause" data-id="1628591967784">開始</button>
+        <button id="t-reset" data-id="1628591967784">歸零</button>
+        <button id="t-delete" data-id="1628591967784">刪除</button>
+    </div>
+</div> -->
 
 </html>
