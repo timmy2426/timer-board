@@ -155,10 +155,10 @@
   margin-bottom: 0;
   border-bottom: none;
 }
-#stopwatch-record-area .stopwatch .data p {
+#stopwatch-record-area .stopwatch .record p {
   font-size: 20px;
 }
-#stopwatch-record-area .stopwatch .data p span {
+#stopwatch-record-area .stopwatch .record p span {
   font-size: 16px;
 }
 /* countdown-timer-area */
@@ -366,12 +366,12 @@
 #control-area input {
   margin: 10px;
 }
-#control-area .input {
+#control-area .input-columns {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#control-area .input input {
+#control-area .input-columns input {
   width: 5em;
 }
 @media (max-width: 576px) {

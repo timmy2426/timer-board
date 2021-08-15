@@ -8,7 +8,7 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <style>
         #dashboard {
             background-color: #f5f5f5;
@@ -100,32 +100,7 @@
         </div>
         <div id="stopwatch-record-area">
             <h2>馬表紀錄</h2>
-            <div id="stopwatch-records">
-                <div class="stopwatch" id="1628591787773">
-                    <div class="data">
-                        <p>#1&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
-                    </div>
-                    <div class="data-controls">
-                        <button id="s-delete" data-id="1628591787773">刪除</button>
-                    </div>
-                </div>
-                <div class="stopwatch" id="1628591787773">
-                    <div class="data">
-                        <p>#2&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
-                    </div>
-                    <div class="data-controls">
-                        <button id="s-delete" data-id="1628591787773">刪除</button>
-                    </div>
-                </div>
-                <div class="stopwatch" id="1628591787773">
-                    <div class="data">
-                        <p>#3&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
-                    </div>
-                    <div class="data-controls">
-                        <button id="s-delete" data-id="1628591787773">刪除</button>
-                    </div>
-                </div>
-            </div>
+            <div id="stopwatch-records"></div>
         </div>
         <div id="countdown-timer-area">
             <h2>倒數計時器</h2>
@@ -141,11 +116,11 @@
                 </div>
                 <div class="digit">
                     <p>
-                        <span id="countdown-hrs">00</span>:<span id="countdown-min">00</span>:<span id="countdown-sec">00</span>
+                        <span id="c-hrs">00</span>:<span id="c-min">00</span>:<span id="c-sec">00</span>
                     </p>
                     <div class="controls">
-                        <button id="countdown-start-pause">開始</button>
-                        <button id="countdown-reset">重設</button>
+                        <button id="c-start-pause">開始</button>
+                        <button id="c-reset">重設</button>
                     </div>
                 </div>
             </div>
@@ -177,46 +152,29 @@
             <h2>控制台</h2>
             <div>
                 <span>設定倒數計時器：</span>
-                <div class="input">
-                    <input id="typing-area" type="text" placeholder="00">
+                <div class="input-columns">
+                    <input id="input-c-hrs" type="text" placeholder="00">
                     <span>時</span>
-                    <input id="typing-area" type="text" placeholder="00">
+                    <input id="input-c-min" type="text" placeholder="00">
                     <span>分</span>
-                    <input id="typing-area" type="text" placeholder="00">
+                    <input id="input-c-sec" type="text" placeholder="00">
                     <span>秒</span>
                 </div>
-                <button id="build">送出</button>
+                <button id="send">送出</button>
             </div>
             <div>
                 <span>新增計時器：</span>
-                <input id="typing-area" type="text" placeholder="計時器名稱">
-                <button id="build">新增</button>
-                <button id="clean">清理</button>
+                <input id="input-timer-name" type="text" placeholder="計時器名稱">
+                <button id="t-build">新增</button>
+                <button id="t-clean">清理</button>
             </div>
         </div>
         <div id="timer-area">
             <h2>計時器</h2>
-            <div id="timer-columns">
-                <div class="timer" id="1628591967784">
-                    <div class="title">
-                        <h3>計時器標題</h3>
-                    </div>
-                    <div class="times">
-                        <p>
-                            <span id="hrs-1628591967784">00</span> 時
-                            <span id="min-1628591967784">00</span> 分
-                            <span id="sec-1628591967784">00</span> 秒
-                        </p>
-                    </div>
-                    <div class="controls">
-                        <button id="start-pause" data-id="1628591967784">開始</button>
-                        <button id="reset" data-id="1628591967784">歸零</button>
-                        <button id="delete" data-id="1628591967784">刪除</button>
-                    </div>
-                </div>
-            </div>
+            <div id="timer-columns"></div>
         </div>
     </div>
+    <script src="dashboard.js"></script>
     <script src="https://tadralling.com/dist/chart.js/dist/chart.min.js"></script>
     <script>
         const labels = ['啟動', '暫停', '待機'];
@@ -270,5 +228,46 @@
     </script>
 
 </body>
+<!-- <div class="stopwatch" id="1628591787773">
+                    <div class="record">
+                        <p>#1&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
+                    </div>
+                    <div class="record-controls">
+                        <button id="s-delete" data-id="1628591787773">刪除</button>
+                    </div>
+                </div>
+                <div class="stopwatch" id="1628591787773">
+                    <div class="record">
+                        <p>#2&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
+                    </div>
+                    <div class="record-controls">
+                        <button id="s-delete" data-id="1628591787773">刪除</button>
+                    </div>
+                </div>
+                <div class="stopwatch" id="1628591787773">
+                    <div class="record">
+                        <p>#3&emsp;&emsp;00 時 00 分 00 秒<span> 00</span></p>
+                    </div>
+                    <div class="record-controls">
+                        <button id="s-delete" data-id="1628591787773">刪除</button>
+                    </div>
+                </div> -->
+<!-- <div class="timer" id="1628591967784">
+                    <div class="title">
+                        <h3>計時器標題</h3>
+                    </div>
+                    <div class="times">
+                        <p>
+                            <span id="t-hrs-1628591967784">00</span> 時
+                            <span id="t-min-1628591967784">00</span> 分
+                            <span id="t-sec-1628591967784">00</span> 秒
+                        </p>
+                    </div>
+                    <div class="controls">
+                        <button id="t-start-pause" data-id="1628591967784">開始</button>
+                        <button id="t-reset" data-id="1628591967784">歸零</button>
+                        <button id="t-delete" data-id="1628591967784">刪除</button>
+                    </div>
+                </div> -->
 
 </html>
