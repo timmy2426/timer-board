@@ -29,10 +29,23 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function fixHeight(parentId, sublevelId) {
+    let screenWidth = window.screen.width;
     let parentEle = document.querySelector(parentId);
     let sublevelEle = document.querySelector(sublevelId);
     let height = parentEle.clientHeight;
-    sublevelEle.setAttribute("style", `height: ${height - 120}px;`);
+    if (screenWidth <= 768) {
+      sublevelEle.setAttribute(
+        "style",
+        `height: ${0.8 * window.screen.height}px;`
+      );
+    } else if (screenWidth <= 1200 && parentId === "#timer-area") {
+      sublevelEle.setAttribute(
+        "style",
+        `height: ${0.8 * window.screen.height}px;`
+      );
+    } else {
+      sublevelEle.setAttribute("style", `height: ${height - 120}px;`);
+    }
   }
 
   function timerPrinter(id, count) {
