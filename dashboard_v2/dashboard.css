@@ -192,15 +192,16 @@
   width: 100%;
   height: 100%;
   fill: none;
-  stroke: #dd9933;
-  stroke-width: 10;
+  stroke: #842b00;
+  stroke-width: 9;
   stroke-linecap: round;
   transform: translate(5px, 5px);
 }
 #countdown-timer-area .countdown-timer .graph svg circle#graph-percent {
-  stroke: #842b00;
+  stroke: #dd9933;
+  stroke-width: 10;
   stroke-dasharray: calc(2 * 70 * 3.1416);
-  stroke-dashoffset: calc(0.25 * 2 * 70 * 3.1416);
+  stroke-dashoffset: calc(1 * 2 * 70 * 3.1416);
 }
 #countdown-timer-area .countdown-timer .graph .percent {
   position: absolute;

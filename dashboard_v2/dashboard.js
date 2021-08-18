@@ -1,4 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const labels = ["啟動", "暫停", "待機"];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        data: [4, 2, 5],
+        backgroundColor: [
+          "rgba(255, 0, 0, 0.2)",
+          "rgba(255, 165, 0, 0.2)",
+          "rgba(0, 128, 0, 0.2)",
+        ],
+        borderColor: ["#b22222", "#ff8c00", "#006400"],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const config = {
+    type: "bar",
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+          },
+          max: Math.max(...data.datasets[0].data) + 1,
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      layout: {
+        padding: 15,
+      },
+    },
+  };
+
+  let timerList = [];
+  let timerIdList = [];
+  let stopwatchCount = 0;
+  let recordNum = 0;
+  let recordIdList = [];
+  let countdownTimerInit = 0;
+  let countdownTimerCount = 0;
+
+  ringtone = new Audio("alarm-ringtone.mp3");
+  statusChart = new Chart(document.getElementById("status-chart"), config);
+  Chart.defaults.font.size = 20;
   class Timer {
     constructor(name) {
       this.id = Date.now();
@@ -6,12 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
       this.count = 0;
     }
   }
-
-  let timerList = [];
-  let timerIdList = [];
-  let stopwatchCount = 0;
-  let recordNum = 0;
-  let recordIdList = [];
 
   function doubleDigit(num) {
     let output = num < 10 ? "0" + `${num}` : `${num}`;
@@ -26,6 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
     return max;
+  }
+
+  function enterClicker(ele, btn) {
+    document.querySelector(ele).addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        document.querySelector(btn).click();
+      }
+    });
   }
 
   function fixHeight(parentId, sublevelId) {
@@ -66,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let index = timerIdList.indexOf(parseInt(btn));
       if (start.innerHTML === "開始") {
         let counter = new Worker("counter.js");
-        counter.postMessage({ count: `${timerList[index].count}` });
+        counter.postMessage({ count: timerList[index].count });
         counter.onmessage = function (e) {
           let count = e.data.count;
           timerPrinter(btn, count);
@@ -93,9 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
         start.click();
       }
       timerList[index].count = 0;
-      document.querySelector(`#t-sec-${btn}`).innerHTML = "00";
-      document.querySelector(`#t-min-${btn}`).innerHTML = "00";
-      document.querySelector(`#t-hrs-${btn}`).innerHTML = "00";
+      timerPrinter(btn, timerList[index].count);
     });
   }
 
@@ -136,6 +187,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function inputConverter(input) {
+    let count = parseInt(input, 10);
+    if (isNaN(count) === true) {
+      return 0;
+    } else {
+      return count;
+    }
+  }
+
+  function countdownTimerPrinter(count) {
+    let c = Math.floor(count / 100);
+    let hrs = Math.floor(c / 3600);
+    let min = Math.floor((c % 3600) / 60);
+    let sec = Math.floor((c % 3600) % 60);
+    document.querySelector("#c-sec").innerHTML = doubleDigit(sec);
+    document.querySelector("#c-min").innerHTML = doubleDigit(min);
+    document.querySelector("#c-hrs").innerHTML = doubleDigit(hrs);
+    countdownTimerCount = count;
+  }
+
+  function percentagePrinter(count, init) {
+    let percentage = Math.floor((count / init) * 100);
+    document.querySelector("#percent-number").innerHTML =
+      doubleDigit(percentage);
+    document.querySelector("#graph-percent").style.strokeDashoffset = `${
+      ((100 - percentage) / 100) * 2 * 70 * 3.1416
+    }`;
+  }
+
   fixHeight("#stopwatch-record-area", "#stopwatch-records");
   fixHeight("#timer-area", "#timer-columns");
 
@@ -159,15 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   if (localStorage.getItem("stopwatchCount")) {
     stopwatchCount = localStorage.getItem("stopwatchCount");
-    let c = Math.floor(stopwatchCount / 100);
-    let tms = stopwatchCount % 100;
-    let sec = c % 60;
-    let min = Math.floor((c / 60) % 60);
-    let hrs = Math.floor((c / 3600) % 100);
-    document.querySelector("#s-tms").innerHTML = doubleDigit(tms);
-    document.querySelector("#s-sec").innerHTML = doubleDigit(sec);
-    document.querySelector("#s-min").innerHTML = doubleDigit(min);
-    document.querySelector("#s-hrs").innerHTML = doubleDigit(hrs);
+    stopwatchPrinter(stopwatchCount);
   }
   if (localStorage.getItem("recordNum")) {
     recordNum = localStorage.getItem("recordNum");
@@ -202,13 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("recordHTML", recordHTML.innerHTML);
   });
 
-  document
-    .querySelector("#input-timer-name")
-    .addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        document.querySelector("#t-build").click();
-      }
-    });
+  enterClicker("#input-timer-name", "#t-build");
 
   document.querySelector("#t-build").onclick = function () {
     if (document.querySelector("#input-timer-name").value !== "") {
@@ -270,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector("#s-start-pause").onclick = function () {
     if (document.querySelector("#s-start-pause").innerHTML === "開始") {
       let counter = new Worker("counter.js");
-      counter.postMessage({ count: `${stopwatchCount}` });
+      counter.postMessage({ count: stopwatchCount });
       counter.onmessage = function (e) {
         let count = e.data.count;
         stopwatchPrinter(count);
@@ -292,14 +358,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector("#s-start-pause").innerHTML !== "開始") {
       document.querySelector("#s-start-pause").click();
     }
-    function reset(id) {
-      document.getElementById(id).innerHTML = "00";
-    }
     stopwatchCount = 0;
-    reset("s-tms");
-    reset("s-sec");
-    reset("s-min");
-    reset("s-hrs");
+    stopwatchPrinter(stopwatchCount);
   };
 
   document.querySelector("#s-record").onclick = function () {
@@ -345,5 +405,84 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#stopwatch-records").innerHTML = "";
     recordNum = 0;
     recordIdList = [];
+  };
+
+  enterClicker("#input-c-sec", "#send");
+  enterClicker("#input-c-min", "#send");
+  enterClicker("#input-c-hrs", "#send");
+
+  document.querySelector("#send").onclick = function () {
+    let count = 0;
+    let sec = document.querySelector("#input-c-sec").value;
+    let min = document.querySelector("#input-c-min").value;
+    let hrs = document.querySelector("#input-c-hrs").value;
+    if (sec !== "") {
+      count = count + inputConverter(sec) * 100;
+    }
+    if (min !== "") {
+      count = count + inputConverter(min) * 100 * 60;
+    }
+    if (hrs !== "") {
+      count = count + inputConverter(hrs) * 100 * 3600;
+    }
+    if (count > 35999900) {
+      countdownTimerCount = 35999900;
+      countdownTimerInit = 35999900;
+    } else {
+      countdownTimerCount = count;
+      countdownTimerInit = count;
+    }
+    countdownTimerPrinter(count);
+    percentagePrinter(countdownTimerCount, countdownTimerInit);
+    document.querySelector("#input-c-sec").value = "";
+    document.querySelector("#input-c-min").value = "";
+    document.querySelector("#input-c-hrs").value = "";
+  };
+
+  document.querySelector("#c-start-pause").onclick = function () {
+    if (document.querySelector("#percent-number").innerHTML !== "00") {
+      if (document.querySelector("#c-start-pause").innerHTML === "開始") {
+        let counter = new Worker("countdown.js");
+        counter.postMessage({ count: countdownTimerCount });
+        counter.onmessage = function (e) {
+          let count = e.data.count;
+          countdownTimerPrinter(count);
+          percentagePrinter(countdownTimerCount, countdownTimerInit);
+          if (count === 0) {
+            document.querySelector("#c-start-pause").innerHTML = "開始";
+            ringtone.play();
+            ringtone.loop = true;
+          }
+        };
+        document.querySelector("#c-start-pause").addEventListener(
+          "click",
+          () => {
+            counter.terminate();
+          },
+          { once: true }
+        );
+        document.querySelector("#c-start-pause").innerHTML = "暫停";
+      } else {
+        document.querySelector("#c-start-pause").innerHTML = "開始";
+      }
+    } else {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+    }
+  };
+
+  document.querySelector("#c-reset").onclick = function () {
+    if (document.querySelector("#c-start-pause").innerHTML !== "開始") {
+      document.querySelector("#c-start-pause").click();
+    }
+    document.querySelector("#percent-number").innerHTML = "00";
+    document.querySelector("#graph-percent").style.strokeDashoffset = `${
+      1 * 2 * 70 * 3.1416
+    }`;
+    ringtone.pause();
+    ringtone.currentTime = 0;
+    countdownTimerInit = 0;
+    countdownTimerCount = 0;
+    countdownTimerPrinter(countdownTimerCount);
   };
 });
