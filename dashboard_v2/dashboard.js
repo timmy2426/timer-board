@@ -432,7 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
       countdownTimerCount = count;
       countdownTimerInit = count;
     }
-    countdownTimerPrinter(count);
+    countdownTimerPrinter(countdownTimerCount);
     percentagePrinter(countdownTimerCount, countdownTimerInit);
     document.querySelector("#input-c-sec").value = "";
     document.querySelector("#input-c-min").value = "";
