@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     labels: labels,
     datasets: [
       {
-        data: [4, 2, 5],
+        data: [0, 0, 0],
         backgroundColor: [
           "rgba(255, 0, 0, 0.2)",
           "rgba(255, 165, 0, 0.2)",
@@ -209,12 +209,126 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function percentagePrinter(count, init) {
     let percentage = Math.floor((count / init) * 100);
+    if (isNaN(percentage) === true) {
+      percentage = 0;
+    }
     document.querySelector("#percent-number").innerHTML =
       doubleDigit(percentage);
     document.querySelector("#graph-percent").style.strokeDashoffset = `${
       ((100 - percentage) / 100) * 2 * 70 * 3.1416
     }`;
   }
+
+  function status() {
+    let element = document.querySelector("#status-area");
+    let recordCount = 0;
+    let timerCount = { activation: 0, suspension: 0, standby: 0 };
+    let stopwatchStatus = 0;
+    let countdownTimerStatus = 0;
+
+    function recordCheck() {
+      document.querySelectorAll(".record").forEach((ele) => {
+        recordCount++;
+      });
+    }
+
+    function timerStatusCheck() {
+      document.querySelectorAll(".timer").forEach((ele) => {
+        let timeStatus = 0;
+        ele.querySelectorAll("span").forEach((span) => {
+          if (span.innerHTML !== "00") {
+            timeStatus++;
+          }
+        });
+        if (ele.querySelector("#t-start-pause").innerHTML !== "開始") {
+          timerCount.activation++;
+        } else if (timeStatus !== 0) {
+          timerCount.suspension++;
+        } else {
+          timerCount.standby++;
+        }
+      });
+    }
+
+    function stopwatchStatusCheck() {
+      let target = document.querySelector("#stopwatch-area");
+      let timeStatus = 0;
+      target.querySelectorAll("span").forEach((span) => {
+        if (span.innerHTML !== "00") {
+          timeStatus++;
+        }
+      });
+      if (target.querySelector("#s-start-pause").innerHTML !== "開始") {
+        stopwatchStatus = 2;
+      } else if (timeStatus !== 1) {
+        stopwatchStatus = 1;
+      } else {
+        stopwatchStatus = 0;
+      }
+    }
+
+    function countdownTimerStatusCheck() {
+      let target = document
+        .querySelector("#countdown-timer-area")
+        .querySelector(".digit");
+      let controls = document
+        .querySelector("#countdown-timer-area")
+        .querySelector("#c-start-pause");
+      if (controls.innerHTML !== "開始") {
+        countdownTimerStatus = 2;
+      } else if (countdownTimerCount !== countdownTimerInit) {
+        countdownTimerStatus = 1;
+      } else {
+        countdownTimerStatus = 0;
+      }
+    }
+
+    function classAdder(ele, status) {
+      let target = element.querySelector(ele);
+      if (status === 0) {
+        target.querySelector(".standby").classList.add("show");
+        target.querySelector(".suspension").classList.remove("show");
+        target.querySelector(".activation").classList.remove("show");
+        target.querySelector(".light").classList.add("green");
+        target.querySelector(".light").classList.remove("orange");
+        target.querySelector(".light").classList.remove("red");
+      }
+      if (status === 1) {
+        target.querySelector(".standby").classList.remove("show");
+        target.querySelector(".suspension").classList.add("show");
+        target.querySelector(".activation").classList.remove("show");
+        target.querySelector(".light").classList.remove("green");
+        target.querySelector(".light").classList.add("orange");
+        target.querySelector(".light").classList.remove("red");
+      }
+      if (status === 2) {
+        target.querySelector(".standby").classList.remove("show");
+        target.querySelector(".suspension").classList.remove("show");
+        target.querySelector(".activation").classList.add("show");
+        target.querySelector(".light").classList.remove("green");
+        target.querySelector(".light").classList.remove("orange");
+        target.querySelector(".light").classList.add("red");
+      }
+    }
+
+    recordCheck();
+    timerStatusCheck();
+    stopwatchStatusCheck();
+    countdownTimerStatusCheck();
+    classAdder(".stopwatch", stopwatchStatus);
+    classAdder(".countdown-timer", countdownTimerStatus);
+    element.querySelector("#stopwatch-record-count").innerHTML = recordCount;
+    element.querySelector("#countdown-timer-percent").innerHTML =
+      document.querySelector("#percent-number").innerHTML;
+    element.querySelector("#timer-count").innerHTML =
+      timerCount.activation + timerCount.suspension + timerCount.standby;
+    statusChart.data.datasets[0].data[0] = timerCount.activation;
+    statusChart.data.datasets[0].data[1] = timerCount.suspension;
+    statusChart.data.datasets[0].data[2] = timerCount.standby;
+    statusChart.options.scales.y.max = Math.max(...data.datasets[0].data) + 1;
+    statusChart.update();
+  }
+  setInterval(status, 100);
 
   fixHeight("#stopwatch-record-area", "#stopwatch-records");
   fixHeight("#timer-area", "#timer-columns");
@@ -440,7 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   document.querySelector("#c-start-pause").onclick = function () {
-    if (document.querySelector("#percent-number").innerHTML !== "00") {
+    if (countdownTimerCount !== 0) {
       if (document.querySelector("#c-start-pause").innerHTML === "開始") {
         let counter = new Worker("countdown.js");
         counter.postMessage({ count: countdownTimerCount });
@@ -475,14 +589,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector("#c-start-pause").innerHTML !== "開始") {
       document.querySelector("#c-start-pause").click();
     }
-    document.querySelector("#percent-number").innerHTML = "00";
-    document.querySelector("#graph-percent").style.strokeDashoffset = `${
-      1 * 2 * 70 * 3.1416
-    }`;
     ringtone.pause();
     ringtone.currentTime = 0;
-    countdownTimerInit = 0;
-    countdownTimerCount = 0;
+    countdownTimerCount = countdownTimerInit;
     countdownTimerPrinter(countdownTimerCount);
+    percentagePrinter(countdownTimerCount, countdownTimerInit);
   };
 });
