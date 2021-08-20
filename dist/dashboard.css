@@ -105,11 +105,25 @@
 #time-area p {
   font-size: 48px;
 }
+#time-area span {
+  display: inline-block;
+}
 #time-area p #session {
+  margin-left: 1em;
   font-size: 36px;
 }
-#time-area p:nth-child(3) {
+#time-area p.date {
   font-size: 28px;
+}
+#time-area p.date #weeks {
+  margin-left: 1em;
+}
+@media (max-width: 576px) {
+  #time-area p #session,
+  #time-area p.date #weeks {
+    display: block;
+    margin: 0.5em 0;
+  }
 }
 /* stopwatch-area */
 #stopwatch-area h2::before {
@@ -192,15 +206,16 @@
   width: 100%;
   height: 100%;
   fill: none;
-  stroke: #dd9933;
-  stroke-width: 10;
+  stroke: #842b00;
+  stroke-width: 9;
   stroke-linecap: round;
   transform: translate(5px, 5px);
 }
 #countdown-timer-area .countdown-timer .graph svg circle#graph-percent {
-  stroke: #842b00;
+  stroke: #dd9933;
+  stroke-width: 10;
   stroke-dasharray: calc(2 * 70 * 3.1416);
-  stroke-dashoffset: calc(0.25 * 2 * 70 * 3.1416);
+  stroke-dashoffset: calc(1 * 2 * 70 * 3.1416);
 }
 #countdown-timer-area .countdown-timer .graph .percent {
   position: absolute;

@@ -8,53 +8,113 @@
     <title>Document</title>
     <script src="dashboard.js"></script>
     <link rel="stylesheet" href="dashboard.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='30' viewBox='0 0 1000 120'%3E%3Cg fill='none' stroke='%23e8e8e8' stroke-width='1.2' stroke-opacity='0.94'%3E%3Cpath d='M-500 75c0 0 125-30 250-30S0 75 0 75s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 45c0 0 125-30 250-30S0 45 0 45s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 105c0 0 125-30 250-30S0 105 0 105s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 15c0 0 125-30 250-30S0 15 0 15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500-15c0 0 125-30 250-30S0-15 0-15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 135c0 0 125-30 250-30S0 135 0 135s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        #dashboard {
+            padding: 30px;
+            background-color: #ffffff;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        button {
+            border-style: solid;
+            border-top-width: 0;
+            border-right-width: 0;
+            border-left-width: 0;
+            border-bottom-width: 0;
+            color: #ffffff;
+            border-color: #842b00;
+            background-color: #842b00;
+            border-radius: 2px;
+            padding-top: 10px;
+            padding-right: 40px;
+            padding-bottom: 10px;
+            padding-left: 40px;
+            font-family: inherit;
+            font-weight: inherit;
+            line-height: 1;
+        }
+
+        body,
+        input,
+        a,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #842b00;
+        }
+
+        input {
+            color: #666;
+            padding: .75em;
+            height: auto;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #eaeaea;
+            border-radius: 2px;
+            background: #fafafa;
+            box-shadow: none;
+            box-sizing: border-box;
+            transition: all .2s linear;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="dashboard-wrap">
-        <div class="settings-area">
-            <h1>計時器</h1>
-            <span>新增計時器：</span>
-            <input id="typing-area" type="text" placeholder="計時器名稱">
+    <div id="dashboard">
+        <div class="dashboard-wrap">
+            <div class="settings-area">
+                <h1>計時器</h1>
+                <span>新增計時器：</span>
+                <input id="typing-area" type="text" placeholder="計時器名稱">
+            </div>
+            <div class="controls-area">
+                <button id="build">新增</button>
+                <button id="clean">清理</button>
+            </div>
+            <div id="record-area"></div>
         </div>
-        <div class="controls-area">
-            <button id="build">新增</button>
-            <button id="clean">清理</button>
+        <div class="dashboard-wrap">
+            <h1>碼表</h1>
+            <div class="stopwatch-times">
+                <span id="s-hrs">00</span> :
+                <span id="s-min">00</span> :
+                <span id="s-sec">00</span> .
+                <span id="s-tms">00</span>
+            </div>
+            <div class="stopwatch-controls">
+                <button id="s-start-pause">開始</button>
+                <button id="s-reset">歸零</button>
+                <button id="s-record">紀錄</button>
+                <button id="s-clean">清理</button>
+            </div>
+            <div id="stopwatch-records"></div>
         </div>
-        <div id="record-area"></div>
-    </div>
-    <div class="dashboard-wrap">
-        <h1>碼表</h1>
-        <div class="stopwatch-times">
-            <span id="s-hrs">00</span> :
-            <span id="s-min">00</span> :
-            <span id="s-sec">00</span> .
-            <span id="s-tms">00</span>
-        </div>
-        <div class="stopwatch-controls">
-            <button id="s-start-pause">開始</button>
-            <button id="s-reset">歸零</button>
-            <button id="s-record">紀錄</button>
-            <button id="s-clean">清理</button>
-        </div>
-        <div id="stopwatch-records"></div>
-    </div>
-    <div class="dashboard-wrap">
-        <h1>使用說明</h1>
-        <div class="instruction">
-            <p>計時器：</p>
-            <ul>
-                <li>1. 在新增計時器欄位內填入自訂名稱。</li>
-                <li>2. 可同時執行多個計時器，並不衝突。</li>
-                <li>3. 使用清理按鈕清除所有計時器。</li>
-                <li>4. 網頁重整可保留已建立的計時器，且數值仍在。</li>
-            </ul>
-            <p>碼表：</p>
-            <ul>
-                <li>1. 使用開始(暫停) / 歸零控制碼表。</li>
-                <li>2. 使用紀錄 / 清理管理紀錄列表。</li>
-                <li>3. 網頁重整可保留碼表數值，且紀錄不會丟失。</li>
-            </ul>
+        <div class="dashboard-wrap">
+            <h1>使用說明</h1>
+            <div class="instruction">
+                <p>計時器：</p>
+                <ul>
+                    <li>1. 在新增計時器欄位內填入自訂名稱。</li>
+                    <li>2. 可同時執行多個計時器，並不衝突。</li>
+                    <li>3. 使用清理按鈕清除所有計時器。</li>
+                    <li>4. 網頁重整可保留已建立的計時器，且數值仍在。</li>
+                </ul>
+                <p>碼表：</p>
+                <ul>
+                    <li>1. 使用開始(暫停) / 歸零控制碼表。</li>
+                    <li>2. 使用紀錄 / 清理管理紀錄列表。</li>
+                    <li>3. 網頁重整可保留碼表數值，且紀錄不會丟失。</li>
+                </ul>
+            </div>
         </div>
     </div>
 </body>

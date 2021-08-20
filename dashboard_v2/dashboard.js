@@ -47,8 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let countdownTimerInit = 0;
   let countdownTimerCount = 0;
 
-  ringtone = new Audio("alarm-ringtone.mp3");
-  statusChart = new Chart(document.getElementById("status-chart"), config);
+  let ringtone = new Audio("digital-alarm.mp3");
+  ringtone.loop = true;
+  let statusChart = new Chart(document.getElementById("status-chart"), config);
   Chart.defaults.font.size = 20;
   class Timer {
     constructor(name) {
@@ -61,16 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function doubleDigit(num) {
     let output = num < 10 ? "0" + `${num}` : `${num}`;
     return output;
-  }
-
-  function maxID(list) {
-    let max = list[0];
-    list.forEach((ele) => {
-      if (ele > max) {
-        max = ele;
-      }
-    });
-    return max;
   }
 
   function enterClicker(ele, btn) {
@@ -99,6 +90,49 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       sublevelEle.setAttribute("style", `height: ${height - 120}px;`);
     }
+  }
+
+  function timePrinter() {
+    let time = new Date();
+    let hrs = 0;
+    let session = "";
+    let weeks = "";
+    if (time.getHours() < 12) {
+      session = "AM";
+      hrs = time.getHours();
+    } else {
+      session = "PM";
+      hrs = time.getHours() - 12;
+    }
+    if (time.getDay() === 0) {
+      weeks = "星期日";
+    }
+    if (time.getDay() === 1) {
+      weeks = "星期一";
+    }
+    if (time.getDay() === 2) {
+      weeks = "星期二";
+    }
+    if (time.getDay() === 3) {
+      weeks = "星期三";
+    }
+    if (time.getDay() === 4) {
+      weeks = "星期四";
+    }
+    if (time.getDay() === 5) {
+      weeks = "星期五";
+    }
+    if (time.getDay() === 6) {
+      weeks = "星期六";
+    }
+    document.querySelector("#hrs").innerHTML = doubleDigit(hrs);
+    document.querySelector("#min").innerHTML = doubleDigit(time.getMinutes());
+    document.querySelector("#sec").innerHTML = doubleDigit(time.getSeconds());
+    document.querySelector("#session").innerHTML = session;
+    document.querySelector("#yer").innerHTML = time.getFullYear();
+    document.querySelector("#mon").innerHTML = time.getMonth() + 1;
+    document.querySelector("#day").innerHTML = time.getDate();
+    document.querySelector("#weeks").innerHTML = weeks;
   }
 
   function timerPrinter(id, count) {
@@ -268,9 +302,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function countdownTimerStatusCheck() {
-      let target = document
-        .querySelector("#countdown-timer-area")
-        .querySelector(".digit");
       let controls = document
         .querySelector("#countdown-timer-area")
         .querySelector("#c-start-pause");
@@ -328,7 +359,6 @@ document.addEventListener("DOMContentLoaded", function () {
     statusChart.options.scales.y.max = Math.max(...data.datasets[0].data) + 1;
     statusChart.update();
   }
-  setInterval(status, 100);
 
   fixHeight("#stopwatch-record-area", "#stopwatch-records");
   fixHeight("#timer-area", "#timer-columns");
@@ -352,11 +382,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   if (localStorage.getItem("stopwatchCount")) {
-    stopwatchCount = localStorage.getItem("stopwatchCount");
+    stopwatchCount = parseInt(localStorage.getItem("stopwatchCount"), 10);
     stopwatchPrinter(stopwatchCount);
   }
   if (localStorage.getItem("recordNum")) {
-    recordNum = localStorage.getItem("recordNum");
+    recordNum = parseInt(localStorage.getItem("recordNum"), 10);
   }
   if (localStorage.getItem("recordIdList")) {
     recordIdList = JSON.parse(localStorage.getItem("recordIdList"));
@@ -369,8 +399,29 @@ document.addEventListener("DOMContentLoaded", function () {
       recordDeleFun(dele);
     });
   }
+  if (
+    localStorage.getItem("countdownTimerInit") &&
+    localStorage.getItem("countdownTimerCount")
+  ) {
+    countdownTimerInit = parseInt(
+      localStorage.getItem("countdownTimerInit"),
+      10
+    );
+    countdownTimerCount = parseInt(
+      localStorage.getItem("countdownTimerCount"),
+      10
+    );
+    countdownTimerPrinter(countdownTimerCount);
+    percentagePrinter(countdownTimerCount, countdownTimerInit);
+  }
+
+  timePrinter();
+  status();
+  setInterval(timePrinter, 1000);
+  setInterval(status, 100);
 
   window.addEventListener("unload", () => {
+    localStorage.clear();
     document.querySelectorAll(".timer").forEach((timer) => {
       let start = timer.querySelector("#t-start-pause");
       if (start.innerHTML !== "開始") {
@@ -386,13 +437,15 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("stopwatchCount", stopwatchCount);
     localStorage.setItem("recordNum", recordNum);
     localStorage.setItem("recordHTML", recordHTML.innerHTML);
+    localStorage.setItem("countdownTimerInit", countdownTimerInit);
+    localStorage.setItem("countdownTimerCount", countdownTimerCount);
   });
 
   enterClicker("#input-timer-name", "#t-build");
 
   document.querySelector("#t-build").onclick = function () {
     if (document.querySelector("#input-timer-name").value !== "") {
-      let lastTimerId = maxID(timerIdList);
+      let lastTimerId = Math.max(...timerIdList);
       let lastTimerWrap = document.getElementById(lastTimerId);
       let name = document.querySelector("#input-timer-name").value;
       document.querySelector("#input-timer-name").value = "";
@@ -478,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelector("#s-record").onclick = function () {
     recordNum++;
-    let lastRecordId = maxID(recordIdList);
+    let lastRecordId = Math.max(...recordIdList);
     let lastRecordWrap = document.getElementById(lastRecordId);
     let tms = document.querySelector("#s-tms").innerHTML;
     let sec = document.querySelector("#s-sec").innerHTML;
@@ -556,22 +609,20 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector("#c-start-pause").onclick = function () {
     if (countdownTimerCount !== 0) {
       if (document.querySelector("#c-start-pause").innerHTML === "開始") {
-        let counter = new Worker("countdown.js");
-        counter.postMessage({ count: countdownTimerCount });
-        counter.onmessage = function (e) {
+        let countdown = new Worker("countdown.js");
+        countdown.postMessage({ count: countdownTimerCount });
+        countdown.onmessage = function (e) {
           let count = e.data.count;
           countdownTimerPrinter(count);
           percentagePrinter(countdownTimerCount, countdownTimerInit);
           if (count === 0) {
-            document.querySelector("#c-start-pause").innerHTML = "開始";
             ringtone.play();
-            ringtone.loop = true;
           }
         };
         document.querySelector("#c-start-pause").addEventListener(
           "click",
           () => {
-            counter.terminate();
+            countdown.terminate();
           },
           { once: true }
         );
@@ -582,6 +633,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       ringtone.pause();
       ringtone.currentTime = 0;
+      countdownTimerCount = countdownTimerInit;
+      countdownTimerPrinter(countdownTimerCount);
+      percentagePrinter(countdownTimerCount, countdownTimerInit);
+      document.querySelector("#c-start-pause").innerHTML = "開始";
     }
   };
 

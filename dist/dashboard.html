@@ -5,10 +5,10 @@
     <div id="time-area">
         <h2>現在時間</h2>
         <p>
-            <span id="hrs">00</span>:<span id="min">00</span>:<span id="sec">00</span>&emsp;<span id="session">AM</span>
+            <span id="hrs"></span>:<span id="min"></span>:<span id="sec"></span><span id="session"></span>
         </p>
-        <p>
-            <span id="yer">2021</span>年<span id="mon">8</span>月<span id="day">15</span>日&emsp;<span id="weeks">星期五</span>
+        <p class="date">
+            <span id="yer"></span>年<span id="mon"></span>月<span id="day"></span>日<span id="weeks"></span>
         </p>
     </div>
     <div id="stopwatch-area">
@@ -40,7 +40,7 @@
                     <circle id="graph-percent" cx="70" cy="70" r="70"></circle>
                 </svg>
                 <div class="percent">
-                    <p><span id="percent-number">75</span> %</p>
+                    <p><span id="percent-number">00</span> %</p>
                 </div>
             </div>
             <div class="digit">
@@ -59,19 +59,19 @@
         <div class="stopwatch">
             <span class="activation">啟動</span>
             <span class="suspension">暫停</span>
-            <span class="standby show">待機</span>
-            <span class="content">共 <span id="stopwatch-record-count">5</span> 筆記錄</span>
-            <div class="light green"></div>
+            <span class="standby">待機</span>
+            <span class="content">共 <span id="stopwatch-record-count">0</span> 筆記錄</span>
+            <div class="light"></div>
         </div>
         <div class="countdown-timer">
-            <span class="activation show">啟動</span>
+            <span class="activation">啟動</span>
             <span class="suspension">暫停</span>
             <span class="standby">待機</span>
-            <span class="content">剩餘 <span id="countdown-timer-percent">75</span> %</span>
-            <div class="light red"></div>
+            <span class="content">剩餘 <span id="countdown-timer-percent">00</span> %</span>
+            <div class="light"></div>
         </div>
         <div class="timers">
-            <span class="content">共 <span id="timer-count">4</span> 台計時器</span>
+            <span class="content">共 <span id="timer-count">0</span> 台計時器</span>
             <div class="chart-container">
                 <canvas id="status-chart"></canvas>
             </div>
@@ -103,51 +103,3 @@
         <div id="timer-columns"></div>
     </div>
 </div>
-<script>
-    const labels = ['啟動', '暫停', '待機'];
-    const data = {
-        labels: labels,
-        datasets: [{
-            data: [4, 2, 5],
-            backgroundColor: [
-                'rgba(255, 0, 0, 0.2)',
-                'rgba(255, 165, 0, 0.2)',
-                'rgba(0, 128, 0, 0.2)'
-            ],
-            borderColor: [
-                '#b22222',
-                '#ff8c00',
-                '#006400'
-            ],
-            borderWidth: 1
-        }]
-    };
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1,
-                    },
-                    max: Math.max(...data.datasets[0].data) + 1
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            layout: {
-                padding: 15
-            },
-        },
-    };
-    Chart.defaults.font.size = 20;
-    var statusChart = new Chart(
-        document.getElementById('status-chart'),
-        config
-    );
-</script>

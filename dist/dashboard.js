@@ -1,4 +1,58 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const labels = ["啟動", "暫停", "待機"];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        data: [0, 0, 0],
+        backgroundColor: [
+          "rgba(255, 0, 0, 0.2)",
+          "rgba(255, 165, 0, 0.2)",
+          "rgba(0, 128, 0, 0.2)",
+        ],
+        borderColor: ["#b22222", "#ff8c00", "#006400"],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const config = {
+    type: "bar",
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+          },
+          max: Math.max(...data.datasets[0].data) + 1,
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      layout: {
+        padding: 15,
+      },
+    },
+  };
+
+  let timerList = [];
+  let timerIdList = [];
+  let stopwatchCount = 0;
+  let recordNum = 0;
+  let recordIdList = [];
+  let countdownTimerInit = 0;
+  let countdownTimerCount = 0;
+
+  let ringtone = new Audio(
+    "https://tadralling.com/dist/dashboard/digital-alarm.mp3"
+  );
+  ringtone.loop = true;
+  let statusChart = new Chart(document.getElementById("status-chart"), config);
+  Chart.defaults.font.size = 20;
   class Timer {
     constructor(name) {
       this.id = Date.now();
@@ -7,32 +61,80 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  let timerList = [];
-  let timerIdList = [];
-  let stopwatchCount = 0;
-  let recordNum = 0;
-  let recordIdList = [];
-
   function doubleDigit(num) {
     let output = num < 10 ? "0" + `${num}` : `${num}`;
     return output;
   }
 
-  function maxID(list) {
-    let max = list[0];
-    list.forEach((ele) => {
-      if (ele > max) {
-        max = ele;
+  function enterClicker(ele, btn) {
+    document.querySelector(ele).addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        document.querySelector(btn).click();
       }
     });
-    return max;
   }
 
   function fixHeight(parentId, sublevelId) {
+    let screenWidth = window.screen.width;
     let parentEle = document.querySelector(parentId);
     let sublevelEle = document.querySelector(sublevelId);
     let height = parentEle.clientHeight;
-    sublevelEle.setAttribute("style", `height: ${height - 120}px;`);
+    if (screenWidth <= 768) {
+      sublevelEle.setAttribute(
+        "style",
+        `height: ${0.8 * window.screen.height}px;`
+      );
+    } else if (screenWidth <= 1200 && parentId === "#timer-area") {
+      sublevelEle.setAttribute(
+        "style",
+        `height: ${0.8 * window.screen.height}px;`
+      );
+    } else {
+      sublevelEle.setAttribute("style", `height: ${height - 120}px;`);
+    }
+  }
+
+  function timePrinter() {
+    let time = new Date();
+    let hrs = 0;
+    let session = "";
+    let weeks = "";
+    if (time.getHours() < 12) {
+      session = "AM";
+      hrs = time.getHours();
+    } else {
+      session = "PM";
+      hrs = time.getHours() - 12;
+    }
+    if (time.getDay() === 0) {
+      weeks = "星期日";
+    }
+    if (time.getDay() === 1) {
+      weeks = "星期一";
+    }
+    if (time.getDay() === 2) {
+      weeks = "星期二";
+    }
+    if (time.getDay() === 3) {
+      weeks = "星期三";
+    }
+    if (time.getDay() === 4) {
+      weeks = "星期四";
+    }
+    if (time.getDay() === 5) {
+      weeks = "星期五";
+    }
+    if (time.getDay() === 6) {
+      weeks = "星期六";
+    }
+    document.querySelector("#hrs").innerHTML = doubleDigit(hrs);
+    document.querySelector("#min").innerHTML = doubleDigit(time.getMinutes());
+    document.querySelector("#sec").innerHTML = doubleDigit(time.getSeconds());
+    document.querySelector("#session").innerHTML = session;
+    document.querySelector("#yer").innerHTML = time.getFullYear();
+    document.querySelector("#mon").innerHTML = time.getMonth() + 1;
+    document.querySelector("#day").innerHTML = time.getDate();
+    document.querySelector("#weeks").innerHTML = weeks;
   }
 
   function timerPrinter(id, count) {
@@ -55,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let counter = new Worker(
           "https://tadralling.com/dist/dashboard/counter.min.js"
         );
-        counter.postMessage({ count: `${timerList[index].count}` });
+        counter.postMessage({ count: timerList[index].count });
         counter.onmessage = function (e) {
           let count = e.data.count;
           timerPrinter(btn, count);
@@ -82,9 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
         start.click();
       }
       timerList[index].count = 0;
-      document.querySelector(`#t-sec-${btn}`).innerHTML = "00";
-      document.querySelector(`#t-min-${btn}`).innerHTML = "00";
-      document.querySelector(`#t-hrs-${btn}`).innerHTML = "00";
+      timerPrinter(btn, timerList[index].count);
     });
   }
 
@@ -125,6 +225,145 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function inputConverter(input) {
+    let count = parseInt(input, 10);
+    if (isNaN(count) === true) {
+      return 0;
+    } else {
+      return count;
+    }
+  }
+
+  function countdownTimerPrinter(count) {
+    let c = Math.floor(count / 100);
+    let hrs = Math.floor(c / 3600);
+    let min = Math.floor((c % 3600) / 60);
+    let sec = Math.floor((c % 3600) % 60);
+    document.querySelector("#c-sec").innerHTML = doubleDigit(sec);
+    document.querySelector("#c-min").innerHTML = doubleDigit(min);
+    document.querySelector("#c-hrs").innerHTML = doubleDigit(hrs);
+    countdownTimerCount = count;
+  }
+
+  function percentagePrinter(count, init) {
+    let percentage = Math.floor((count / init) * 100);
+    if (isNaN(percentage) === true) {
+      percentage = 0;
+    }
+    document.querySelector("#percent-number").innerHTML =
+      doubleDigit(percentage);
+    document.querySelector("#graph-percent").style.strokeDashoffset = `${
+      ((100 - percentage) / 100) * 2 * 70 * 3.1416
+    }`;
+  }
+
+  function status() {
+    let element = document.querySelector("#status-area");
+    let recordCount = 0;
+    let timerCount = { activation: 0, suspension: 0, standby: 0 };
+    let stopwatchStatus = 0;
+    let countdownTimerStatus = 0;
+
+    function recordCheck() {
+      document.querySelectorAll(".record").forEach((ele) => {
+        recordCount++;
+      });
+    }
+
+    function timerStatusCheck() {
+      document.querySelectorAll(".timer").forEach((ele) => {
+        let timeStatus = 0;
+        ele.querySelectorAll("span").forEach((span) => {
+          if (span.innerHTML !== "00") {
+            timeStatus++;
+          }
+        });
+        if (ele.querySelector("#t-start-pause").innerHTML !== "開始") {
+          timerCount.activation++;
+        } else if (timeStatus !== 0) {
+          timerCount.suspension++;
+        } else {
+          timerCount.standby++;
+        }
+      });
+    }
+
+    function stopwatchStatusCheck() {
+      let target = document.querySelector("#stopwatch-area");
+      let timeStatus = 0;
+      target.querySelectorAll("span").forEach((span) => {
+        if (span.innerHTML !== "00") {
+          timeStatus++;
+        }
+      });
+      if (target.querySelector("#s-start-pause").innerHTML !== "開始") {
+        stopwatchStatus = 2;
+      } else if (timeStatus !== 1) {
+        stopwatchStatus = 1;
+      } else {
+        stopwatchStatus = 0;
+      }
+    }
+
+    function countdownTimerStatusCheck() {
+      let controls = document
+        .querySelector("#countdown-timer-area")
+        .querySelector("#c-start-pause");
+      if (controls.innerHTML !== "開始") {
+        countdownTimerStatus = 2;
+      } else if (countdownTimerCount !== countdownTimerInit) {
+        countdownTimerStatus = 1;
+      } else {
+        countdownTimerStatus = 0;
+      }
+    }
+
+    function classAdder(ele, status) {
+      let target = element.querySelector(ele);
+      if (status === 0) {
+        target.querySelector(".standby").classList.add("show");
+        target.querySelector(".suspension").classList.remove("show");
+        target.querySelector(".activation").classList.remove("show");
+        target.querySelector(".light").classList.add("green");
+        target.querySelector(".light").classList.remove("orange");
+        target.querySelector(".light").classList.remove("red");
+      }
+      if (status === 1) {
+        target.querySelector(".standby").classList.remove("show");
+        target.querySelector(".suspension").classList.add("show");
+        target.querySelector(".activation").classList.remove("show");
+        target.querySelector(".light").classList.remove("green");
+        target.querySelector(".light").classList.add("orange");
+        target.querySelector(".light").classList.remove("red");
+      }
+      if (status === 2) {
+        target.querySelector(".standby").classList.remove("show");
+        target.querySelector(".suspension").classList.remove("show");
+        target.querySelector(".activation").classList.add("show");
+        target.querySelector(".light").classList.remove("green");
+        target.querySelector(".light").classList.remove("orange");
+        target.querySelector(".light").classList.add("red");
+      }
+    }
+
+    recordCheck();
+    timerStatusCheck();
+    stopwatchStatusCheck();
+    countdownTimerStatusCheck();
+    classAdder(".stopwatch", stopwatchStatus);
+    classAdder(".countdown-timer", countdownTimerStatus);
+    element.querySelector("#stopwatch-record-count").innerHTML = recordCount;
+    element.querySelector("#countdown-timer-percent").innerHTML =
+      document.querySelector("#percent-number").innerHTML;
+    element.querySelector("#timer-count").innerHTML =
+      timerCount.activation + timerCount.suspension + timerCount.standby;
+    statusChart.data.datasets[0].data[0] = timerCount.activation;
+    statusChart.data.datasets[0].data[1] = timerCount.suspension;
+    statusChart.data.datasets[0].data[2] = timerCount.standby;
+    statusChart.options.scales.y.max = Math.max(...data.datasets[0].data) + 1;
+    statusChart.update();
+  }
+
   fixHeight("#stopwatch-record-area", "#stopwatch-records");
   fixHeight("#timer-area", "#timer-columns");
 
@@ -147,19 +386,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   if (localStorage.getItem("stopwatchCount")) {
-    stopwatchCount = localStorage.getItem("stopwatchCount");
-    let c = Math.floor(stopwatchCount / 100);
-    let tms = stopwatchCount % 100;
-    let sec = c % 60;
-    let min = Math.floor((c / 60) % 60);
-    let hrs = Math.floor((c / 3600) % 100);
-    document.querySelector("#s-tms").innerHTML = doubleDigit(tms);
-    document.querySelector("#s-sec").innerHTML = doubleDigit(sec);
-    document.querySelector("#s-min").innerHTML = doubleDigit(min);
-    document.querySelector("#s-hrs").innerHTML = doubleDigit(hrs);
+    stopwatchCount = parseInt(localStorage.getItem("stopwatchCount"), 10);
+    stopwatchPrinter(stopwatchCount);
   }
   if (localStorage.getItem("recordNum")) {
-    recordNum = localStorage.getItem("recordNum");
+    recordNum = parseInt(localStorage.getItem("recordNum"), 10);
   }
   if (localStorage.getItem("recordIdList")) {
     recordIdList = JSON.parse(localStorage.getItem("recordIdList"));
@@ -172,8 +403,29 @@ document.addEventListener("DOMContentLoaded", function () {
       recordDeleFun(dele);
     });
   }
+  if (
+    localStorage.getItem("countdownTimerInit") &&
+    localStorage.getItem("countdownTimerCount")
+  ) {
+    countdownTimerInit = parseInt(
+      localStorage.getItem("countdownTimerInit"),
+      10
+    );
+    countdownTimerCount = parseInt(
+      localStorage.getItem("countdownTimerCount"),
+      10
+    );
+    countdownTimerPrinter(countdownTimerCount);
+    percentagePrinter(countdownTimerCount, countdownTimerInit);
+  }
+
+  timePrinter();
+  status();
+  setInterval(timePrinter, 1000);
+  setInterval(status, 100);
 
   window.addEventListener("unload", () => {
+    localStorage.clear();
     document.querySelectorAll(".timer").forEach((timer) => {
       let start = timer.querySelector("#t-start-pause");
       if (start.innerHTML !== "開始") {
@@ -189,19 +441,15 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("stopwatchCount", stopwatchCount);
     localStorage.setItem("recordNum", recordNum);
     localStorage.setItem("recordHTML", recordHTML.innerHTML);
+    localStorage.setItem("countdownTimerInit", countdownTimerInit);
+    localStorage.setItem("countdownTimerCount", countdownTimerCount);
   });
 
-  document
-    .querySelector("#input-timer-name")
-    .addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        document.querySelector("#t-build").click();
-      }
-    });
+  enterClicker("#input-timer-name", "#t-build");
 
   document.querySelector("#t-build").onclick = function () {
     if (document.querySelector("#input-timer-name").value !== "") {
-      let lastTimerId = maxID(timerIdList);
+      let lastTimerId = Math.max(...timerIdList);
       let lastTimerWrap = document.getElementById(lastTimerId);
       let name = document.querySelector("#input-timer-name").value;
       document.querySelector("#input-timer-name").value = "";
@@ -261,7 +509,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let counter = new Worker(
         "https://tadralling.com/dist/dashboard/counter.min.js"
       );
-      counter.postMessage({ count: `${stopwatchCount}` });
+      counter.postMessage({ count: stopwatchCount });
       counter.onmessage = function (e) {
         let count = e.data.count;
         stopwatchPrinter(count);
@@ -283,19 +531,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector("#s-start-pause").innerHTML !== "開始") {
       document.querySelector("#s-start-pause").click();
     }
-    function reset(id) {
-      document.getElementById(id).innerHTML = "00";
-    }
     stopwatchCount = 0;
-    reset("s-tms");
-    reset("s-sec");
-    reset("s-min");
-    reset("s-hrs");
+    stopwatchPrinter(stopwatchCount);
   };
 
   document.querySelector("#s-record").onclick = function () {
     recordNum++;
-    let lastRecordId = maxID(recordIdList);
+    let lastRecordId = Math.max(...recordIdList);
     let lastRecordWrap = document.getElementById(lastRecordId);
     let tms = document.querySelector("#s-tms").innerHTML;
     let sec = document.querySelector("#s-sec").innerHTML;
@@ -336,5 +578,84 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#stopwatch-records").innerHTML = "";
     recordNum = 0;
     recordIdList = [];
+  };
+
+  enterClicker("#input-c-sec", "#send");
+  enterClicker("#input-c-min", "#send");
+  enterClicker("#input-c-hrs", "#send");
+
+  document.querySelector("#send").onclick = function () {
+    let count = 0;
+    let sec = document.querySelector("#input-c-sec").value;
+    let min = document.querySelector("#input-c-min").value;
+    let hrs = document.querySelector("#input-c-hrs").value;
+    if (sec !== "") {
+      count = count + inputConverter(sec) * 100;
+    }
+    if (min !== "") {
+      count = count + inputConverter(min) * 100 * 60;
+    }
+    if (hrs !== "") {
+      count = count + inputConverter(hrs) * 100 * 3600;
+    }
+    if (count > 35999900) {
+      countdownTimerCount = 35999900;
+      countdownTimerInit = 35999900;
+    } else {
+      countdownTimerCount = count;
+      countdownTimerInit = count;
+    }
+    countdownTimerPrinter(countdownTimerCount);
+    percentagePrinter(countdownTimerCount, countdownTimerInit);
+    document.querySelector("#input-c-sec").value = "";
+    document.querySelector("#input-c-min").value = "";
+    document.querySelector("#input-c-hrs").value = "";
+  };
+
+  document.querySelector("#c-start-pause").onclick = function () {
+    if (countdownTimerCount !== 0) {
+      if (document.querySelector("#c-start-pause").innerHTML === "開始") {
+        let counter = new Worker(
+          "https://tadralling.com/dist/dashboard/countdown.min.js"
+        );
+        counter.postMessage({ count: countdownTimerCount });
+        counter.onmessage = function (e) {
+          let count = e.data.count;
+          countdownTimerPrinter(count);
+          percentagePrinter(countdownTimerCount, countdownTimerInit);
+          if (count === 0) {
+            ringtone.play();
+          }
+        };
+        document.querySelector("#c-start-pause").addEventListener(
+          "click",
+          () => {
+            counter.terminate();
+          },
+          { once: true }
+        );
+        document.querySelector("#c-start-pause").innerHTML = "暫停";
+      } else {
+        document.querySelector("#c-start-pause").innerHTML = "開始";
+      }
+    } else {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      countdownTimerCount = countdownTimerInit;
+      countdownTimerPrinter(countdownTimerCount);
+      percentagePrinter(countdownTimerCount, countdownTimerInit);
+      document.querySelector("#c-start-pause").innerHTML = "開始";
+    }
+  };
+
+  document.querySelector("#c-reset").onclick = function () {
+    if (document.querySelector("#c-start-pause").innerHTML !== "開始") {
+      document.querySelector("#c-start-pause").click();
+    }
+    ringtone.pause();
+    ringtone.currentTime = 0;
+    countdownTimerCount = countdownTimerInit;
+    countdownTimerPrinter(countdownTimerCount);
+    percentagePrinter(countdownTimerCount, countdownTimerInit);
   };
 });
