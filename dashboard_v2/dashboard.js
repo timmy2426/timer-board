@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // chart.js const setting
   const labels = ["啟動", "暫停", "待機"];
   const data = {
     labels: labels,
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "rgba(255, 165, 0, 0.2)",
           "rgba(0, 128, 0, 0.2)",
         ],
-        borderColor: ["#b22222", "#ff8c00", "#006400"],
+        borderColor: ["#ff0000", "#ffa500", "#008000"],
         borderWidth: 1,
       },
     ],
@@ -24,8 +25,20 @@ document.addEventListener("DOMContentLoaded", function () {
           beginAtZero: true,
           ticks: {
             stepSize: 1,
+            color: "#2f0000",
           },
           max: Math.max(...data.datasets[0].data) + 1,
+          grid: {
+            color: "#e0e0e0",
+          },
+        },
+        x: {
+          ticks: {
+            color: "#2f0000",
+          },
+          grid: {
+            color: "#e0e0e0",
+          },
         },
       },
       plugins: {
@@ -39,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   };
 
+  // variable declaration
   let timerList = [];
   let timerIdList = [];
   let stopwatchCount = 0;
@@ -47,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let countdownTimerInit = 0;
   let countdownTimerCount = 0;
 
+  // object declaration
   let ringtone = new Audio("digital-alarm.mp3");
   ringtone.loop = true;
   let statusChart = new Chart(document.getElementById("status-chart"), config);
@@ -59,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // function declaration
   function doubleDigit(num) {
     let output = num < 10 ? "0" + `${num}` : `${num}`;
     return output;
@@ -222,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function inputConverter(input) {
-    let count = parseInt(input, 10);
+    let count = Math.abs(parseInt(input, 10));
     if (isNaN(count) === true) {
       return 0;
     } else {
@@ -360,9 +376,11 @@ document.addEventListener("DOMContentLoaded", function () {
     statusChart.update();
   }
 
+  // fixed box height
   fixHeight("#stopwatch-record-area", "#stopwatch-records");
   fixHeight("#timer-area", "#timer-columns");
 
+  // read local storage data
   if (localStorage.getItem("timerList")) {
     timerList = JSON.parse(localStorage.getItem("timerList"));
   }
@@ -415,13 +433,17 @@ document.addEventListener("DOMContentLoaded", function () {
     percentagePrinter(countdownTimerCount, countdownTimerInit);
   }
 
+  // run regular updates
   timePrinter();
   status();
   setInterval(timePrinter, 1000);
   setInterval(status, 100);
 
+  // write local storage data
   window.addEventListener("unload", () => {
     localStorage.clear();
+    let darkMode = document.querySelector("#mode-toggle").checked;
+    localStorage.setItem("darkMode", darkMode);
     document.querySelectorAll(".timer").forEach((timer) => {
       let start = timer.querySelector("#t-start-pause");
       if (start.innerHTML !== "開始") {
@@ -441,6 +463,56 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("countdownTimerCount", countdownTimerCount);
   });
 
+  // theme switching
+  document
+    .querySelector("#mode-toggle")
+    .addEventListener("change", function () {
+      if (this.checked) {
+        document.querySelector("body").classList.add("dark-mode");
+        document.querySelector("#mode-status").classList.add("dark");
+        document.querySelector("#mode-status").classList.remove("light");
+        statusChart.config.options.scales.y.ticks.color = "#e0e0e0";
+        statusChart.config.options.scales.x.ticks.color = "#e0e0e0";
+        statusChart.config.options.scales.y.grid.color = "#3c3c3c";
+        statusChart.config.options.scales.x.grid.color = "#3c3c3c";
+        statusChart.data.datasets[0].backgroundColor[0] =
+          "rgba(246, 121, 194, 0.3)";
+        statusChart.data.datasets[0].backgroundColor[1] =
+          "rgba(243, 157, 104, 0.3)";
+        statusChart.data.datasets[0].backgroundColor[2] =
+          "rgba(185, 210, 177, 0.3)";
+        statusChart.data.datasets[0].borderColor[0] = "#f679c2";
+        statusChart.data.datasets[0].borderColor[1] = "#f39d68";
+        statusChart.data.datasets[0].borderColor[2] = "#b9d2b1";
+      } else {
+        document.querySelector("body").classList.remove("dark-mode");
+        document.querySelector("#mode-status").classList.remove("dark");
+        document.querySelector("#mode-status").classList.add("light");
+        statusChart.config.options.scales.y.ticks.color = "#2f0000";
+        statusChart.config.options.scales.x.ticks.color = "#2f0000";
+        statusChart.config.options.scales.y.grid.color = "#e0e0e0";
+        statusChart.config.options.scales.x.grid.color = "#e0e0e0";
+        statusChart.data.datasets[0].backgroundColor[0] =
+          "rgba(255, 0, 0, 0.2)";
+        statusChart.data.datasets[0].backgroundColor[1] =
+          "rgba(255, 160, 66, 0.2)";
+        statusChart.data.datasets[0].backgroundColor[2] =
+          "rgba(0, 128, 0, 0.2)";
+        statusChart.data.datasets[0].borderColor[0] = "#ff0000";
+        statusChart.data.datasets[0].borderColor[1] = "#ffa042";
+        statusChart.data.datasets[0].borderColor[2] = "#008000";
+      }
+    });
+  if (window.matchMedia) {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.querySelector("#mode-toggle").click();
+    }
+  }
+  if (localStorage.getItem("darkMode") === "true") {
+    document.querySelector("#mode-toggle").click();
+  }
+
+  // timer
   enterClicker("#input-timer-name", "#t-build");
 
   document.querySelector("#t-build").onclick = function () {
@@ -500,6 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
     timerIdList = [];
   };
 
+  // stopwatch
   document.querySelector("#s-start-pause").onclick = function () {
     if (document.querySelector("#s-start-pause").innerHTML === "開始") {
       let counter = new Worker("counter.js");
@@ -574,6 +647,7 @@ document.addEventListener("DOMContentLoaded", function () {
     recordIdList = [];
   };
 
+  // countdownTimer
   enterClicker("#input-c-sec", "#send");
   enterClicker("#input-c-min", "#send");
   enterClicker("#input-c-hrs", "#send");

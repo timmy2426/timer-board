@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css">
-    <script src="dashboard.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="dashboard.js"></script>
     <style>
-        #dashboard {
+        /* #dashboard {
             background-color: #f5f5f5;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='30' viewBox='0 0 1000 120'%3E%3Cg fill='none' stroke='%23e8e8e8' stroke-width='1.2' stroke-opacity='0.94'%3E%3Cpath d='M-500 75c0 0 125-30 250-30S0 75 0 75s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 45c0 0 125-30 250-30S0 45 0 45s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 105c0 0 125-30 250-30S0 105 0 105s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 15c0 0 125-30 250-30S0 15 0 15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500-15c0 0 125-30 250-30S0-15 0-15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 135c0 0 125-30 250-30S0 135 0 135s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3C/g%3E%3C/svg%3E");
-        }
+        } */
 
         button {
             border-style: solid;
@@ -22,9 +22,6 @@
             border-right-width: 0;
             border-left-width: 0;
             border-bottom-width: 0;
-            color: #ffffff;
-            border-color: #842b00;
-            background-color: #842b00;
             border-radius: 2px;
             padding-top: 10px;
             padding-right: 40px;
@@ -35,7 +32,7 @@
             line-height: 1;
         }
 
-        body,
+        /* body,
         input,
         a,
         h1,
@@ -45,17 +42,14 @@
         h5,
         h6 {
             color: #842b00;
-        }
+        } */
 
         input {
-            color: #666;
             padding: .75em;
             height: auto;
             border-width: 1px;
             border-style: solid;
-            border-color: #eaeaea;
             border-radius: 2px;
-            background: #fafafa;
             box-shadow: none;
             box-sizing: border-box;
             transition: all .2s linear;
@@ -143,6 +137,13 @@
         <div id="control-area">
             <h2>控制台</h2>
             <div>
+                <span>顯示主題：</span>
+                <div class="mode">
+                    <input type="checkbox" id="mode-toggle">
+                    <span id="mode-status" class="light"></span>
+                </div>
+            </div>
+            <div>
                 <span>設定倒數計時器：</span>
                 <div class="input-columns">
                     <input id="input-c-hrs" type="text" placeholder="00">
@@ -160,64 +161,40 @@
                 <button id="t-build">新增</button>
                 <button id="t-clean">清理</button>
             </div>
+            <div>
+                <div class="instruction">
+                    <h3>馬表</h3>
+                    <ul>
+                        <li>使用開始(暫停) / 歸零控制馬表。</li>
+                        <li>使用紀錄 / 清理管理馬表紀錄。</li>
+                        <li>網頁重整可保留馬表數值，且紀錄不會丟失。</li>
+                    </ul>
+                </div>
+                <div class="instruction">
+                    <h3>倒數計時器</h3>
+                    <ul>
+                        <li>在設定倒數計時器欄位內填入數字。</li>
+                        <li>自動加總時分秒，最大值為99時59分59秒。</li>
+                        <li>時間到會自動無限循環撥放鈴聲，可按暫停或重設關閉。</li>
+                        <li>網頁重整可保留倒數計時器數值。</li>
+                    </ul>
+                </div>
+                <div class="instruction">
+                    <h3>計時器</h3>
+                    <ul>
+                        <li>在新增計時器欄位內填入自訂名稱。</li>
+                        <li>可同時執行多個計時器，並不衝突。</li>
+                        <li>使用清理按鈕清除所有計時器。</li>
+                        <li>網頁重整可保留已建立的計時器，且數值仍在。</li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="timer-area">
             <h2>計時器</h2>
             <div id="timer-columns"></div>
         </div>
     </div>
-
-    <!-- <script>
-        const labels = ['啟動', '暫停', '待機'];
-        const data = {
-            labels: labels,
-            datasets: [{
-                data: [4, 2, 5],
-                backgroundColor: [
-                    'rgba(255, 0, 0, 0.2)',
-                    'rgba(255, 165, 0, 0.2)',
-                    'rgba(0, 128, 0, 0.2)'
-                ],
-                borderColor: [
-                    '#b22222',
-                    '#ff8c00',
-                    '#006400'
-                ],
-                borderWidth: 1
-            }]
-        };
-
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                        },
-                        max: Math.max(...data.datasets[0].data) + 1
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                layout: {
-                    padding: 15
-                },
-            },
-        };
-        Chart.defaults.font.size = 20;
-
-        var statusChart = new Chart(
-            document.getElementById('status-chart'),
-            config
-        );
-
-    </script> -->
 
 </body>
 <!--    

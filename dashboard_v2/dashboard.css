@@ -4,7 +4,73 @@
   font-family: RobotoMono;
   src: url("../font/RobotoMono-VariableFont_wght.ttf");
 }
-/* layout */
+/* light-mode */
+:root {
+  --main-color: #842b00;
+  --minor-color: #cf9e9e;
+  --text-color: #2f0000;
+  --activation-color: #ff0000;
+  --suspension-color: #ffa042;
+  --standby-color: #008000;
+  --background-color: #f5f5f5;
+  --box-color: #fbfbfb;
+  --border-color: rgba(128, 128, 128, 0.1);
+  --shadow-color: rgba(128, 128, 128, 0.3);
+  --scrollbar-color: #d0d0d0;
+}
+/* dark-mode */
+.dark-mode {
+  --main-color: #809bce;
+  --minor-color: #b9d2b1;
+  --text-color: #e0e0e0;
+  --activation-color: #f679c2;
+  --suspension-color: #f39d68;
+  --standby-color: #b9d2b1;
+  --background-color: #121212;
+  --box-color: #202020;
+  --border-color: #202020;
+  --shadow-color: none;
+  --scrollbar-color: #3c3c3c;
+}
+/* layout & basic */
+h1,
+h2,
+h3,
+p,
+span,
+a {
+  color: var(--text-color);
+}
+input {
+  color: var(--text-color);
+  background: var(--box-color);
+  border-color: var(--text-color);
+  outline: none;
+}
+button {
+  color: var(--box-color);
+  border-color: var(--main-color);
+  background-color: var(--main-color);
+}
+::placeholder {
+  color: var(--text-color);
+}
+::-webkit-scrollbar,
+#stopwatch-record-area #stopwatch-records::-webkit-scrollbar,
+#timer-area #timer-columns::-webkit-scrollbar {
+  width: 10px;
+  background-color: var(--box-color);
+}
+::-webkit-scrollbar-thumb,
+#stopwatch-record-area #stopwatch-records::-webkit-scrollbar-thumb,
+#timer-area #timer-columns::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  background-color: var(--scrollbar-color);
+}
+body {
+  background-color: var(--background-color);
+}
 #dashboard {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 3fr);
@@ -40,13 +106,13 @@
 #status-area,
 #control-area,
 #timer-area {
-  background-color: #fbfbfb;
+  background-color: var(--box-color);
   padding: 0 30px 30px;
   margin: 15px;
-  border: 1px solid rgba(128, 128, 128, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 5px;
-  box-shadow: 10px 10px 15px rgba(128, 128, 128, 0.3),
-    inset 5px 5px 15px rgba(128, 128, 128, 0.3);
+  box-shadow: 10px 10px 15px var(--shadow-color),
+    inset 5px 5px 15px var(--shadow-color);
 }
 #time-area {
   grid-area: time;
@@ -165,7 +231,7 @@
   align-items: center;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #842b00;
+  border-bottom: 1px solid var(--main-color);
 }
 #stopwatch-record-area #stopwatch-records .record:last-child {
   padding-bottom: 0;
@@ -206,13 +272,13 @@
   width: 100%;
   height: 100%;
   fill: none;
-  stroke: #842b00;
+  stroke: var(--main-color);
   stroke-width: 9;
   stroke-linecap: round;
   transform: translate(5px, 5px);
 }
 #countdown-timer-area .countdown-timer .graph svg circle#graph-percent {
-  stroke: #dd9933;
+  stroke: var(--minor-color);
   stroke-width: 10;
   stroke-dasharray: calc(2 * 70 * 3.1416);
   stroke-dashoffset: calc(1 * 2 * 70 * 3.1416);
@@ -270,7 +336,7 @@
   align-items: center;
   padding: 10px;
   margin: 20px 0;
-  border: 1px solid #842b00;
+  border: 1px solid var(--main-color);
   font-size: 20px;
 }
 #status-area .timers {
@@ -281,7 +347,7 @@
   align-items: center;
   padding: 10px;
   margin: 20px 0;
-  border: 1px solid #842b00;
+  border: 1px solid var(--main-color);
   font-size: 20px;
 }
 #status-area .stopwatch::before {
@@ -292,6 +358,7 @@
   font-family: "Font Awesome 5 Free";
   font-weight: bold;
   content: "\f2f2";
+  color: var(--main-color);
   padding-right: 1em;
 }
 #status-area .countdown-timer::before {
@@ -302,6 +369,7 @@
   font-family: "Font Awesome 5 Free";
   font-weight: bold;
   content: "\f251";
+  color: var(--main-color);
   padding-right: 1em;
 }
 #status-area .timers::before {
@@ -312,6 +380,7 @@
   font-family: "Font Awesome 5 Free";
   font-weight: normal;
   content: "\f017";
+  color: var(--main-color);
   padding-right: 1em;
 }
 #status-area .activation,
@@ -322,15 +391,15 @@
 }
 #status-area .activation.show {
   display: inline-block;
-  color: #ff0000;
+  color: var(--activation-color);
 }
 #status-area .suspension.show {
   display: inline-block;
-  color: #ffa500;
+  color: var(--suspension-color);
 }
 #status-area .standby.show {
   display: inline-block;
-  color: #008000;
+  color: var(--standby-color);
 }
 #status-area .content {
   margin: 10px;
@@ -341,24 +410,21 @@
   display: inline-block;
   top: 1.5em;
   right: 1em;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 #status-area .stopwatch .light.red,
 #status-area .countdown-timer .light.red {
-  background-color: #ff0000;
-  border: 1px solid #b22222;
+  background-color: var(--activation-color);
 }
 #status-area .stopwatch .light.orange,
 #status-area .countdown-timer .light.orange {
-  background-color: #ffa500;
-  border: 1px solid #ff8c00;
+  background-color: var(--suspension-color);
 }
 #status-area .stopwatch .light.green,
 #status-area .countdown-timer .light.green {
-  background-color: #008000;
-  border: 1px solid #006400;
+  background-color: var(--standby-color);
 }
 #status-area .timers .chart-container {
   position: relative;
@@ -391,9 +457,62 @@
   align-items: center;
   font-size: 20px;
 }
+#control-area > div:last-child {
+  align-items: flex-start;
+}
 #control-area > div span {
   display: inline-block;
   margin: 10px 0;
+}
+#control-area .mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#control-area .mode #mode-toggle {
+  appearance: none;
+  cursor: pointer;
+  height: 30px;
+  width: 60px;
+  border-radius: 16px;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  border: 2px solid var(--main-color);
+  background: var(--main-color);
+  transition: all 0.2s ease;
+}
+#control-area .mode #mode-toggle:focus {
+  outline: 0;
+}
+#control-area .mode #mode-toggle::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--minor-color);
+  transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
+}
+#control-area .mode #mode-toggle:checked {
+  background: var(--main-color);
+}
+#control-area .mode #mode-toggle:checked::after {
+  transform: translatex(30px);
+}
+#control-area .mode #mode-status.light::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: normal;
+  content: "\f185";
+  padding-left: 0.5em;
+}
+#control-area .mode #mode-status.dark::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: normal;
+  content: "\f186";
+  padding-left: 0.5em;
 }
 #control-area input {
   margin: 10px;
@@ -406,6 +525,22 @@
 }
 #control-area .input-columns input {
   width: 5em;
+}
+#control-area .instruction {
+  box-sizing: border-box;
+  width: calc(100% / 3);
+  padding: 0 30px;
+}
+#control-area .instruction ul {
+  color: var(--text-color);
+}
+#control-area .instruction ul li {
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  #control-area .instruction {
+    width: 100%;
+  }
 }
 @media (max-width: 576px) {
   #control-area > div {
@@ -427,7 +562,7 @@
   padding: 0 20px 20px;
   margin: 20px 0;
   text-align: center;
-  border: 1px solid #842b00;
+  border: 1px solid var(--main-color);
   border-radius: 10px;
 }
 #timer-area .timer .times p {
