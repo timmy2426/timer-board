@@ -22,7 +22,7 @@
 /* dark-mode */
 .dark-mode {
   --main-color: #809bce;
-  --minor-color: #b9d2b1;
+  --minor-color: #cfb680;
   --text-color: #e0e0e0;
   --activation-color: #f679c2;
   --suspension-color: #f39d68;
@@ -34,7 +34,7 @@
   --scrollbar-color: #3c3c3c;
   --transparent-color: #121212;
 }
-/* layout & basic */
+/* scrollbar */
 ::-webkit-scrollbar,
 #dashboard #stopwatch-record-area #stopwatch-records::-webkit-scrollbar,
 #dashboard #timer-area #timer-columns::-webkit-scrollbar {
@@ -48,30 +48,9 @@
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
   background-color: var(--scrollbar-color);
 }
+/* layout & basic */
 body {
   background-color: var(--background-color);
-}
-#dashboard h1,
-#dashboard h2,
-#dashboard h3,
-#dashboard p,
-#dashboard span,
-#dashboard a {
-  color: var(--text-color);
-}
-#dashboard input[type="text"] {
-  color: var(--text-color);
-  background: var(--box-color);
-  border-color: var(--text-color);
-  outline: none;
-}
-#dashboard button {
-  color: var(--box-color);
-  border-color: var(--main-color);
-  background-color: var(--main-color);
-}
-#dashboard ::placeholder {
-  color: var(--text-color);
 }
 #dashboard {
   display: grid;
@@ -84,6 +63,13 @@ body {
     "control control timer";
   font-family: RobotoMono;
   background-color: var(--transparent-color);
+}
+#dashboard h1,
+#dashboard h2,
+#dashboard h3,
+#dashboard p,
+#dashboard span {
+  color: var(--text-color);
 }
 #dashboard h2 {
   text-align: center;
@@ -99,16 +85,28 @@ body {
   text-align: center;
   margin: 0.5em 0;
 }
+#dashboard input[type="text"] {
+  color: var(--text-color);
+  background: var(--box-color);
+  border-color: var(--text-color);
+  outline: none;
+}
 #dashboard button {
+  color: var(--box-color);
+  border-color: var(--main-color);
+  background-color: var(--main-color);
   margin: 10px;
 }
-#time-area,
-#stopwatch-area,
-#stopwatch-record-area,
-#countdown-timer-area,
-#status-area,
-#control-area,
-#timer-area {
+#dashboard ::placeholder {
+  color: var(--text-color);
+}
+#dashboard #time-area,
+#dashboard #stopwatch-area,
+#dashboard #stopwatch-record-area,
+#dashboard #countdown-timer-area,
+#dashboard #status-area,
+#dashboard #control-area,
+#dashboard #timer-area {
   background-color: var(--box-color);
   padding: 0 30px 30px;
   margin: 15px;
@@ -117,25 +115,25 @@ body {
   box-shadow: 10px 10px 15px var(--shadow-color),
     inset 5px 5px 15px var(--shadow-color);
 }
-#time-area {
+#dashboard #time-area {
   grid-area: time;
 }
-#stopwatch-area {
+#dashboard #stopwatch-area {
   grid-area: stopwatch;
 }
-#stopwatch-record-area {
+#dashboard #stopwatch-record-area {
   grid-area: stopwatch-record;
 }
-#countdown-timer-area {
+#dashboard #countdown-timer-area {
   grid-area: countdown-timer;
 }
-#status-area {
+#dashboard #status-area {
   grid-area: status;
 }
-#control-area {
+#dashboard #control-area {
   grid-area: control;
 }
-#timer-area {
+#dashboard #timer-area {
   grid-area: timer;
 }
 @media (max-width: 1200px) {
