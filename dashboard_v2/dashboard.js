@@ -503,13 +503,17 @@ document.addEventListener("DOMContentLoaded", function () {
         statusChart.data.datasets[0].borderColor[2] = "#008000";
       }
     });
-  if (window.matchMedia) {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.querySelector("#mode-toggle").click();
-    }
-  }
   if (localStorage.getItem("darkMode") === "true") {
     document.querySelector("#mode-toggle").click();
+  } else if (localStorage.getItem("darkMode") === "false") {
+    return;
+  } else {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.querySelector("#mode-toggle").click();
+    }
   }
 
   // timer
