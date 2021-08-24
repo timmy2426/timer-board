@@ -116,6 +116,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (time.getHours() < 12) {
       session = "AM";
       hrs = time.getHours();
+    } else if (time.getHours() === 12) {
+      session = "PM";
+      hrs = time.getHours();
     } else {
       session = "PM";
       hrs = time.getHours() - 12;
