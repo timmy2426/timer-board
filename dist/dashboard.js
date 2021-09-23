@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let recordIdList = [];
   let countdownTimerInit = 0;
   let countdownTimerCount = 0;
+  let lastTimerCount = { activation: 0, suspension: 0, standby: 0 };
 
   // object declaration
   let ringtone = new Audio(
@@ -376,11 +377,20 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector("#percent-number").innerHTML;
     element.querySelector("#timer-count").innerHTML =
       timerCount.activation + timerCount.suspension + timerCount.standby;
-    statusChart.data.datasets[0].data[0] = timerCount.activation;
-    statusChart.data.datasets[0].data[1] = timerCount.suspension;
-    statusChart.data.datasets[0].data[2] = timerCount.standby;
-    statusChart.options.scales.y.max = Math.max(...data.datasets[0].data) + 1;
-    statusChart.update();
+    if (
+      lastTimerCount.activation === timerCount.activation &&
+      lastTimerCount.suspension === timerCount.suspension &&
+      lastTimerCount.standby === timerCount.standby
+    ) {
+      return;
+    } else {
+      statusChart.data.datasets[0].data[0] = timerCount.activation;
+      statusChart.data.datasets[0].data[1] = timerCount.suspension;
+      statusChart.data.datasets[0].data[2] = timerCount.standby;
+      statusChart.options.scales.y.max = Math.max(...data.datasets[0].data) + 1;
+      statusChart.update();
+      lastTimerCount = timerCount;
+    }
   }
 
   // fixed box height
@@ -509,6 +519,7 @@ document.addEventListener("DOMContentLoaded", function () {
         statusChart.data.datasets[0].borderColor[1] = "#ffa042";
         statusChart.data.datasets[0].borderColor[2] = "#008000";
       }
+      statusChart.update();
     });
   if (localStorage.getItem("darkMode") === "true") {
     document.querySelector("#mode-toggle").click();
