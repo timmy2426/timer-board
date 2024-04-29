@@ -521,10 +521,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       statusChart.update();
     });
-  if (localStorage.getItem("darkMode") === "true") {
-    document.querySelector("#mode-toggle").click();
-  } else if (localStorage.getItem("darkMode") === "false") {
-    return;
+  if (localStorage.getItem("darkMode")) {
+    if (localStorage.getItem("darkMode") === "true") {
+      document.querySelector("#mode-toggle").click();
+    }
   } else {
     if (
       window.matchMedia &&
