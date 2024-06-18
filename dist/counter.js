@@ -1,8 +1,8 @@
-onmessage = function (e) {
+self.onmessage = function (e) {
   let c = e.data.count;
   function counter() {
     c++;
-    postMessage({ count: `${c}` });
+    self.postMessage({ count: `${c}` });
   }
   setInterval(counter, 10);
 };
